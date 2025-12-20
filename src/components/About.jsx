@@ -1,12 +1,14 @@
 import { motion } from 'framer-motion';
 import { useInView } from 'framer-motion';
-import { useRef } from 'react';
+import { useRef, useState } from 'react';
 import { GraduationCap, Code, Lightbulb } from 'lucide-react';
+import { duration, easing, isTouchDevice } from '../utils/motionConfig';
 import './About.css';
 
 const About = () => {
     const ref = useRef(null);
     const isInView = useInView(ref, { once: true, margin: '-100px' });
+    const [hoveredCard, setHoveredCard] = useState(null);
 
     const containerVariants = {
         hidden: { opacity: 0 },
@@ -23,7 +25,32 @@ const About = () => {
         visible: {
             opacity: 1,
             y: 0,
-            transition: { duration: 0.6, ease: 'easeOut' },
+            transition: { duration: duration.slow, ease: easing.enter },
+        },
+    };
+
+    // Icon animation variants
+    const iconVariants = {
+        initial: { scale: 1, rotate: 0 },
+        hover: {
+            scale: 1.15,
+            rotate: [0, -10, 10, -10, 0],
+            transition: {
+                duration: 0.5,
+                ease: easing.emphasis,
+            },
+        },
+    };
+
+    // Content stagger for card internals
+    const contentVariants = {
+        hidden: { opacity: 0 },
+        visible: {
+            opacity: 1,
+            transition: {
+                staggerChildren: 0.1,
+                delayChildren: 0.2,
+            },
         },
     };
 
@@ -70,7 +97,7 @@ const About = () => {
                 className="section-header"
                 initial={{ opacity: 0, y: 30 }}
                 animate={isInView ? { opacity: 1, y: 0 } : {}}
-                transition={{ duration: 0.6 }}
+                transition={{ duration: duration.slow }}
             >
                 <h2 className="section-title">About Me</h2>
                 <p className="section-subtitle">
@@ -90,11 +117,37 @@ const About = () => {
                         key={index}
                         className="card about-card"
                         variants={cardVariants}
-                        whileHover={{ y: -10, transition: { duration: 0.3 } }}
+                        whileHover={{
+                            y: -10,
+                            scale: 1.02,
+                            transition: { duration: duration.fast }
+                        }}
+                        onHoverStart={() => setHoveredCard(index)}
+                        onHoverEnd={() => setHoveredCard(null)}
                     >
-                        <div className="about-card-icon">{card.icon}</div>
-                        <h3>{card.title}</h3>
-                        <div className="about-card-content">{card.content}</div>
+                        <motion.div
+                            className="about-card-icon"
+                            variants={iconVariants}
+                            initial="initial"
+                            animate={hoveredCard === index && !isTouchDevice() ? "hover" : "initial"}
+                        >
+                            {card.icon}
+                        </motion.div>
+                        <motion.h3
+                            initial={{ opacity: 0 }}
+                            animate={{ opacity: 1 }}
+                            transition={{ delay: 0.3 + index * 0.1 }}
+                        >
+                            {card.title}
+                        </motion.h3>
+                        <motion.div
+                            className="about-card-content"
+                            variants={contentVariants}
+                            initial="hidden"
+                            animate={isInView ? "visible" : "hidden"}
+                        >
+                            {card.content}
+                        </motion.div>
                     </motion.div>
                 ))}
             </motion.div>

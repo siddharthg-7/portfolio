@@ -10,13 +10,14 @@ import {
     hoverScale,
     tapScale,
     scrollReveal,
+    isMobileDevice,
 } from '../utils/motionConfig';
 import './Hero.css';
 
 const Hero = () => {
-    // Parallax effect on scroll
+    // Parallax effect on scroll (disabled on mobile for performance)
     const { scrollY } = useScroll();
-    const y = useTransform(scrollY, [0, 500], [0, 150]);
+    const y = useTransform(scrollY, [0, 500], isMobileDevice() ? [0, 0] : [0, 150]);
     const opacity = useTransform(scrollY, [0, 300], [1, 0]);
 
     const handleScroll = (id) => {

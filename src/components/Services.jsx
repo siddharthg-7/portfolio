@@ -1,11 +1,13 @@
 import { motion, useInView } from 'framer-motion';
-import { useRef } from 'react';
+import { useRef, useState } from 'react';
 import { Briefcase, Users, Rocket, Award } from 'lucide-react';
+import { duration, easing, isTouchDevice } from '../utils/motionConfig';
 import './Services.css';
 
 const Services = () => {
     const ref = useRef(null);
     const isInView = useInView(ref, { once: true, margin: '-100px' });
+    const [hoveredService, setHoveredService] = useState(null);
 
     const services = [
         { icon: <Briefcase size={24} />, text: 'Internships' },
@@ -19,17 +21,43 @@ const Services = () => {
         visible: {
             opacity: 1,
             transition: {
-                staggerChildren: 0.1,
+                staggerChildren: 0.12,
             },
         },
     };
 
     const itemVariants = {
-        hidden: { opacity: 0, y: 20 },
+        hidden: { opacity: 0, y: 20, scale: 0.95 },
         visible: {
             opacity: 1,
             y: 0,
-            transition: { duration: 0.5, ease: 'easeOut' },
+            scale: 1,
+            transition: { duration: duration.base, ease: easing.enter },
+        },
+    };
+
+    // Icon pulse animation
+    const iconVariants = {
+        initial: { scale: 1 },
+        hover: {
+            scale: [1, 1.2, 1],
+            rotate: [0, 5, -5, 0],
+            transition: {
+                duration: 0.6,
+                ease: easing.emphasis,
+            },
+        },
+    };
+
+    // Background glow animation
+    const glowVariants = {
+        initial: { opacity: 0, scale: 0.8 },
+        hover: {
+            opacity: 1,
+            scale: 1.2,
+            transition: {
+                duration: duration.fast,
+            },
         },
     };
 
@@ -39,7 +67,7 @@ const Services = () => {
                 className="section-header"
                 initial={{ opacity: 0, y: 30 }}
                 animate={isInView ? { opacity: 1, y: 0 } : {}}
-                transition={{ duration: 0.6 }}
+                transition={{ duration: duration.slow }}
             >
                 <h2 className="section-title">Open to Opportunities</h2>
                 <p className="section-subtitle">
@@ -59,10 +87,38 @@ const Services = () => {
                             key={index}
                             className="service-item"
                             variants={itemVariants}
-                            whileHover={{ y: -5, transition: { duration: 0.3 } }}
+                            whileHover={{
+                                y: -8,
+                                scale: 1.05,
+                                transition: { duration: duration.fast }
+                            }}
+                            onHoverStart={() => setHoveredService(index)}
+                            onHoverEnd={() => setHoveredService(null)}
                         >
-                            <div className="service-icon">{service.icon}</div>
-                            <span>{service.text}</span>
+                            {/* Background glow effect */}
+                            <motion.div
+                                className="service-glow"
+                                variants={glowVariants}
+                                initial="initial"
+                                animate={hoveredService === index && !isTouchDevice() ? "hover" : "initial"}
+                            />
+
+                            <motion.div
+                                className="service-icon"
+                                variants={iconVariants}
+                                initial="initial"
+                                animate={hoveredService === index && !isTouchDevice() ? "hover" : "initial"}
+                            >
+                                {service.icon}
+                            </motion.div>
+
+                            <motion.span
+                                initial={{ opacity: 0 }}
+                                animate={{ opacity: 1 }}
+                                transition={{ delay: 0.2 + index * 0.1 }}
+                            >
+                                {service.text}
+                            </motion.span>
                         </motion.div>
                     ))}
                 </motion.div>

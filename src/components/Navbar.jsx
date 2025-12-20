@@ -6,6 +6,7 @@ import './Navbar.css';
 const Navbar = () => {
     const [scrolled, setScrolled] = useState(false);
     const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+    const [activeSection, setActiveSection] = useState('home');
 
     useEffect(() => {
         const handleScroll = () => {
@@ -14,6 +15,31 @@ const Navbar = () => {
 
         window.addEventListener('scroll', handleScroll);
         return () => window.removeEventListener('scroll', handleScroll);
+    }, []);
+
+    // Track active section based on scroll position
+    useEffect(() => {
+        const sections = document.querySelectorAll('section[id]');
+
+        const observer = new IntersectionObserver(
+            (entries) => {
+                entries.forEach((entry) => {
+                    if (entry.isIntersecting) {
+                        setActiveSection(entry.target.id);
+                    }
+                });
+            },
+            {
+                threshold: 0.3, // Trigger when 30% of section is visible
+                rootMargin: '-100px 0px -60% 0px', // Adjust trigger area
+            }
+        );
+
+        sections.forEach((section) => observer.observe(section));
+
+        return () => {
+            sections.forEach((section) => observer.unobserve(section));
+        };
     }, []);
 
     const navLinks = [
@@ -59,7 +85,11 @@ const Navbar = () => {
                             animate={{ opacity: 1, y: 0 }}
                             transition={{ delay: 0.1 * index }}
                         >
-                            <a href={link.href} onClick={(e) => handleLinkClick(e, link.href)}>
+                            <a
+                                href={link.href}
+                                onClick={(e) => handleLinkClick(e, link.href)}
+                                className={activeSection === link.href.substring(1) ? 'active' : ''}
+                            >
                                 {link.name}
                             </a>
                         </motion.li>
@@ -92,7 +122,11 @@ const Navbar = () => {
                                 animate={{ opacity: 1, x: 0 }}
                                 transition={{ duration: 0.3 }}
                             >
-                                <a href={link.href} onClick={(e) => handleLinkClick(e, link.href)}>
+                                <a
+                                    href={link.href}
+                                    onClick={(e) => handleLinkClick(e, link.href)}
+                                    className={activeSection === link.href.substring(1) ? 'active' : ''}
+                                >
                                     {link.name}
                                 </a>
                             </motion.li>

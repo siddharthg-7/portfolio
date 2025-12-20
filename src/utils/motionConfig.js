@@ -8,6 +8,24 @@ export const prefersReducedMotion = () => {
     return window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 };
 
+// Check if device is mobile/tablet
+export const isMobileDevice = () => {
+    return window.innerWidth <= 768 ||
+        /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+};
+
+// Check if device is touch-enabled
+export const isTouchDevice = () => {
+    return 'ontouchstart' in window || navigator.maxTouchPoints > 0;
+};
+
+// Get optimized duration based on device
+export const getOptimizedDuration = (baseDuration) => {
+    if (prefersReducedMotion()) return 0;
+    if (isMobileDevice()) return baseDuration * 0.7; // 30% faster on mobile
+    return baseDuration;
+};
+
 // ===========================
 // DURATION TOKENS
 // ===========================
@@ -153,6 +171,35 @@ export const slideInRight = {
 };
 
 // ===========================
+// MOBILE-OPTIMIZED VARIANTS
+// ===========================
+
+// Mobile-friendly fade in up (reduced distance)
+export const fadeInUpMobile = {
+    initial: {
+        opacity: 0,
+        y: isMobileDevice() ? 12 : 24,
+    },
+    animate: {
+        opacity: 1,
+        y: 0,
+        transition: {
+            duration: getOptimizedDuration(duration.base),
+            ease: easing.enter,
+        },
+    },
+};
+
+// Mobile-friendly hover lift (reduced distance)
+export const hoverLiftMobile = {
+    y: isMobileDevice() ? -2 : -4,
+    transition: {
+        duration: getOptimizedDuration(duration.instant),
+        ease: easing.emphasis,
+    },
+};
+
+// ===========================
 // STAGGER CONFIGURATIONS
 // ===========================
 export const staggerContainer = {
@@ -206,6 +253,43 @@ export const tapScale = {
     scale: 0.97,
     transition: {
         duration: duration.instant,
+    },
+};
+
+// ===========================
+// BUTTON STATES (Phase 3)
+// ===========================
+export const buttonStates = {
+    default: {
+        scale: 1,
+        opacity: 1,
+    },
+    hover: {
+        scale: 1.05,
+        transition: {
+            duration: duration.instant,
+            ease: easing.emphasis,
+        },
+    },
+    tap: {
+        scale: 0.97,
+        transition: {
+            duration: duration.instant,
+        },
+    },
+    disabled: {
+        scale: 1,
+        opacity: 0.5,
+        cursor: 'not-allowed',
+        transition: {
+            duration: duration.fast,
+        },
+    },
+    active: {
+        scale: 0.98,
+        transition: {
+            duration: duration.instant,
+        },
     },
 };
 

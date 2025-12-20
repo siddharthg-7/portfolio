@@ -1,11 +1,13 @@
 import { motion, useInView } from 'framer-motion';
-import { useRef } from 'react';
-import { Calendar } from 'lucide-react';
+import { useRef, useState } from 'react';
+import { Calendar, CheckCircle } from 'lucide-react';
+import { duration, easing, isTouchDevice } from '../utils/motionConfig';
 import './Experience.css';
 
 const Experience = () => {
     const ref = useRef(null);
     const isInView = useInView(ref, { once: true, margin: '-100px' });
+    const [hoveredItem, setHoveredItem] = useState(null);
 
     const experiences = [
         {
@@ -41,7 +43,39 @@ const Experience = () => {
         visible: {
             opacity: 1,
             x: 0,
-            transition: { duration: 0.6, ease: 'easeOut' },
+            transition: { duration: duration.slow, ease: easing.enter },
+        },
+    };
+
+    // Point list stagger animation
+    const pointsVariants = {
+        hidden: { opacity: 0 },
+        visible: {
+            opacity: 1,
+            transition: {
+                staggerChildren: 0.15,
+            },
+        },
+    };
+
+    const pointVariants = {
+        hidden: { opacity: 0, x: -20 },
+        visible: {
+            opacity: 1,
+            x: 0,
+            transition: { duration: duration.fast },
+        },
+    };
+
+    // Timeline dot animation
+    const dotVariants = {
+        initial: { scale: 1 },
+        hover: {
+            scale: 1.3,
+            transition: {
+                duration: duration.instant,
+                ease: easing.emphasis,
+            },
         },
     };
 
@@ -51,7 +85,7 @@ const Experience = () => {
                 className="section-header"
                 initial={{ opacity: 0, y: 30 }}
                 animate={isInView ? { opacity: 1, y: 0 } : {}}
-                transition={{ duration: 0.6 }}
+                transition={{ duration: duration.slow }}
             >
                 <h2 className="section-title">Experience</h2>
                 <p className="section-subtitle">
@@ -70,20 +104,71 @@ const Experience = () => {
                         key={index}
                         className="experience-item"
                         variants={itemVariants}
-                        whileHover={{ x: 10, transition: { duration: 0.3 } }}
+                        whileHover={{
+                            x: 10,
+                            transition: { duration: duration.fast }
+                        }}
+                        onHoverStart={() => setHoveredItem(index)}
+                        onHoverEnd={() => setHoveredItem(null)}
                     >
-                        <div className="experience-header">
-                            <h3 className="experience-title">{exp.title}</h3>
-                            <div className="experience-date">
-                                <Calendar size={16} />
-                                <span>{exp.date}</span>
+                        {/* Animated timeline dot */}
+                        <motion.div
+                            className="timeline-dot"
+                            variants={dotVariants}
+                            initial="initial"
+                            animate={hoveredItem === index && !isTouchDevice() ? "hover" : "initial"}
+                        />
+
+                        <div className="experience-content">
+                            <div className="experience-header">
+                                <motion.h3
+                                    className="experience-title"
+                                    initial={{ opacity: 0 }}
+                                    animate={{ opacity: 1 }}
+                                    transition={{ delay: 0.2 + index * 0.1 }}
+                                >
+                                    {exp.title}
+                                </motion.h3>
+                                <motion.div
+                                    className="experience-date"
+                                    initial={{ opacity: 0, scale: 0.9 }}
+                                    animate={{ opacity: 1, scale: 1 }}
+                                    transition={{ delay: 0.3 + index * 0.1 }}
+                                >
+                                    <Calendar size={16} />
+                                    <span>{exp.date}</span>
+                                </motion.div>
                             </div>
+
+                            <motion.ul
+                                className="experience-description"
+                                variants={pointsVariants}
+                                initial="hidden"
+                                animate={isInView ? "visible" : "hidden"}
+                            >
+                                {exp.points.map((point, pointIndex) => (
+                                    <motion.li
+                                        key={pointIndex}
+                                        variants={pointVariants}
+                                    >
+                                        <motion.span
+                                            className="point-icon"
+                                            initial={{ scale: 0 }}
+                                            animate={{ scale: 1 }}
+                                            transition={{
+                                                delay: 0.4 + index * 0.1 + pointIndex * 0.1,
+                                                type: "spring",
+                                                stiffness: 200,
+                                                damping: 15
+                                            }}
+                                        >
+                                            <CheckCircle size={16} />
+                                        </motion.span>
+                                        {point}
+                                    </motion.li>
+                                ))}
+                            </motion.ul>
                         </div>
-                        <ul className="experience-description">
-                            {exp.points.map((point, pointIndex) => (
-                                <li key={pointIndex}>{point}</li>
-                            ))}
-                        </ul>
                     </motion.div>
                 ))}
             </motion.div>

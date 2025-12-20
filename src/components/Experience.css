@@ -25,8 +25,8 @@
     transition: transform 0.3s ease;
 }
 
-.experience-item::before {
-    content: '';
+/* Animated timeline dot */
+.timeline-dot {
     position: absolute;
     left: -6px;
     top: 0;
@@ -36,6 +36,10 @@
     border-radius: 50%;
     box-shadow: 0 0 20px rgba(0, 212, 255, 0.6);
     z-index: 1;
+}
+
+.experience-content {
+    position: relative;
 }
 
 .experience-header {
@@ -69,15 +73,16 @@
     color: var(--color-text-secondary);
     position: relative;
     line-height: 1.7;
+    display: flex;
+    align-items: flex-start;
+    gap: var(--spacing-sm);
 }
 
-.experience-description li::before {
-    content: '▹';
-    position: absolute;
-    left: 0;
+/* Animated check icon */
+.point-icon {
     color: var(--color-accent-primary);
-    font-weight: bold;
-    font-size: var(--text-lg);
+    flex-shrink: 0;
+    margin-top: 2px;
 }
 
 @media (max-width: 768px) {

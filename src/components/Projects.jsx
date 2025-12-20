@@ -1,5 +1,5 @@
 import { motion, useInView } from 'framer-motion';
-import { useRef } from 'react';
+import { useRef, useState } from 'react';
 import { ExternalLink, Github } from 'lucide-react';
 import {
     fadeInUp,
@@ -9,12 +9,14 @@ import {
     hoverLift,
     tapScale,
     scrollReveal,
+    isTouchDevice,
 } from '../utils/motionConfig';
 import './Projects.css';
 
 const Projects = () => {
     const ref = useRef(null);
     const isInView = useInView(ref, { once: true, margin: '-100px' });
+    const [hoveredCard, setHoveredCard] = useState(null);
 
     const projects = [
         {
@@ -109,6 +111,12 @@ const Projects = () => {
         },
     };
 
+    // Tech chip hover animation (only on desktop)
+    const getTechChipAnimation = (cardIndex) => {
+        if (isTouchDevice()) return {};
+        return hoveredCard === cardIndex ? { y: -3, scale: 1.05 } : { y: 0, scale: 1 };
+    };
+
     return (
         <section id="projects" className="section projects-section" ref={ref}>
             <motion.div
@@ -142,6 +150,8 @@ const Projects = () => {
                             },
                         }}
                         whileTap={tapScale}
+                        onHoverStart={() => setHoveredCard(index)}
+                        onHoverEnd={() => setHoveredCard(null)}
                     >
                         {/* Status badge with animation */}
                         <motion.span
@@ -190,7 +200,7 @@ const Projects = () => {
                             ))}
                         </motion.ul>
 
-                        {/* Tech stack */}
+                        {/* Tech stack with hover animation */}
                         <motion.div
                             className="project-tech"
                             initial={{ opacity: 0 }}
@@ -201,6 +211,11 @@ const Projects = () => {
                                 <motion.span
                                     key={techIndex}
                                     className="tech-tag"
+                                    animate={getTechChipAnimation(index)}
+                                    transition={{
+                                        duration: duration.instant,
+                                        delay: techIndex * 0.03,
+                                    }}
                                     whileHover={{
                                         scale: 1.1,
                                         y: -2,
@@ -212,7 +227,7 @@ const Projects = () => {
                             ))}
                         </motion.div>
 
-                        {/* GitHub link with icon animation */}
+                        {/* GitHub link with enhanced animation */}
                         {project.link && (
                             <motion.a
                                 href={project.link}
@@ -220,10 +235,13 @@ const Projects = () => {
                                 rel="noopener noreferrer"
                                 className="project-link"
                                 initial={{ opacity: 0 }}
-                                animate={{ opacity: 1 }}
-                                transition={{ delay: 0.7 + index * 0.15 }}
+                                animate={{
+                                    opacity: hoveredCard === index || isTouchDevice() ? 1 : 0.7,
+                                }}
+                                transition={{ duration: duration.fast }}
                                 whileHover={{
                                     x: 5,
+                                    opacity: 1,
                                     transition: { duration: duration.instant },
                                 }}
                             >

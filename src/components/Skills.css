@@ -28,13 +28,34 @@
     border-radius: var(--radius-full);
     font-size: var(--text-sm);
     color: var(--color-text-primary);
-    transition: all 0.3s ease;
+    transition: all 0.3s cubic-bezier(0.25, 0.1, 0.25, 1);
     cursor: default;
     font-weight: 500;
+    position: relative;
+    overflow: hidden;
+}
+
+.skill-chip::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 0;
+    height: 0;
+    border-radius: 50%;
+    background: rgba(0, 212, 255, 0.4);
+    transform: translate(-50%, -50%);
+    transition: width 0.4s ease, height 0.4s ease;
+}
+
+.skill-chip:hover::before {
+    width: 120%;
+    height: 120%;
 }
 
 .skill-chip:hover {
     background: rgba(0, 212, 255, 0.2);
     border-color: rgba(0, 212, 255, 0.5);
     box-shadow: 0 4px 12px rgba(0, 212, 255, 0.2);
+    transform: translateY(-2px);
 }
