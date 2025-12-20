@@ -1,0 +1,58 @@
+.about-section {
+    background: linear-gradient(180deg, transparent 0%, rgba(18, 18, 26, 0.3) 100%);
+}
+
+.about-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: var(--spacing-xl);
+    margin-top: var(--spacing-2xl);
+}
+
+.about-card {
+    display: flex;
+    flex-direction: column;
+}
+
+.about-card-icon {
+    width: 60px;
+    height: 60px;
+    background: var(--gradient-card);
+    border-radius: var(--radius-md);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: var(--spacing-md);
+    border: 1px solid rgba(0, 212, 255, 0.2);
+    color: var(--color-accent-primary);
+}
+
+.about-card h3 {
+    margin-bottom: var(--spacing-md);
+    color: var(--color-text-primary);
+    font-size: var(--text-2xl);
+}
+
+.about-card-content {
+    color: var(--color-text-secondary);
+    line-height: 1.8;
+}
+
+.about-card-content p {
+    margin-bottom: var(--spacing-sm);
+}
+
+.about-card-content p:last-child {
+    margin-bottom: 0;
+}
+
+.about-card-content strong {
+    color: var(--color-text-primary);
+    font-weight: 600;
+}
+
+.graduation-date {
+    color: var(--color-accent-tertiary);
+    font-weight: 500;
+    font-size: var(--text-sm);
+}

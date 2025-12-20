@@ -1,0 +1,398 @@
+.hero {
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: var(--spacing-3xl) var(--spacing-lg);
+    padding-top: calc(var(--spacing-3xl) + 60px);
+    position: relative;
+    overflow: hidden;
+}
+
+/* Animated grid background */
+.hero-grid {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-image:
+        linear-gradient(rgba(0, 212, 255, 0.03) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(0, 212, 255, 0.03) 1px, transparent 1px);
+    background-size: 50px 50px;
+    animation: gridMove 20s linear infinite;
+    opacity: 0.5;
+    pointer-events: none;
+}
+
+@keyframes gridMove {
+    0% {
+        transform: translate(0, 0);
+    }
+
+    100% {
+        transform: translate(50px, 50px);
+    }
+}
+
+/* Floating gradient orbs */
+.hero-orb {
+    position: absolute;
+    border-radius: 50%;
+    filter: blur(80px);
+    opacity: 0.3;
+    pointer-events: none;
+    will-change: transform;
+}
+
+.hero-orb-1 {
+    top: 10%;
+    left: 10%;
+    width: 400px;
+    height: 400px;
+    background: radial-gradient(circle, rgba(124, 58, 237, 0.4) 0%, transparent 70%);
+}
+
+.hero-orb-2 {
+    bottom: 10%;
+    right: 10%;
+    width: 500px;
+    height: 500px;
+    background: radial-gradient(circle, rgba(0, 212, 255, 0.4) 0%, transparent 70%);
+}
+
+.hero-content {
+    max-width: 1400px;
+    width: 100%;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: var(--spacing-3xl);
+    align-items: center;
+    position: relative;
+    z-index: 1;
+}
+
+.hero-text {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-md);
+}
+
+/* Greeting */
+.hero-greeting-wrapper {
+    display: inline-block;
+}
+
+.hero-greeting {
+    font-size: var(--text-lg);
+    color: var(--color-accent-primary);
+    font-weight: 600;
+    display: inline-flex;
+    align-items: center;
+    gap: var(--spacing-xs);
+}
+
+.greeting-icon {
+    animation: sparkle 2s ease-in-out infinite;
+}
+
+@keyframes sparkle {
+
+    0%,
+    100% {
+        transform: rotate(0deg) scale(1);
+        opacity: 1;
+    }
+
+    50% {
+        transform: rotate(180deg) scale(1.2);
+        opacity: 0.8;
+    }
+}
+
+/* Title */
+.hero-title {
+    font-size: clamp(2.5rem, 5vw, 4rem);
+    line-height: 1.1;
+    margin-bottom: var(--spacing-sm);
+}
+
+.hero-title-gradient {
+    background: linear-gradient(135deg,
+            #ffffff 0%,
+            var(--color-accent-primary) 50%,
+            var(--color-accent-secondary) 100%);
+    background-size: 200% 200%;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    will-change: background-position;
+}
+
+.hero-tagline {
+    font-size: var(--text-xl);
+    color: var(--color-text-secondary);
+    font-weight: 500;
+    line-height: 1.5;
+}
+
+.hero-description {
+    font-size: var(--text-base);
+    color: var(--color-text-muted);
+    max-width: 600px;
+    line-height: 1.8;
+}
+
+/* CTA Buttons */
+.hero-cta {
+    display: flex;
+    gap: var(--spacing-md);
+    margin-top: var(--spacing-md);
+}
+
+.btn {
+    position: relative;
+    overflow: hidden;
+    will-change: transform;
+}
+
+.btn span {
+    position: relative;
+    z-index: 1;
+}
+
+/* Social Links */
+.hero-social {
+    display: flex;
+    gap: var(--spacing-md);
+    margin-top: var(--spacing-lg);
+}
+
+.hero-social a {
+    width: 50px;
+    height: 50px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: rgba(0, 212, 255, 0.1);
+    border: 1px solid rgba(0, 212, 255, 0.3);
+    border-radius: var(--radius-md);
+    color: var(--color-accent-primary);
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    will-change: transform;
+}
+
+.hero-social a:hover {
+    box-shadow: 0 8px 24px rgba(0, 212, 255, 0.3);
+}
+
+/* Profile Image Container */
+.hero-image-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+    will-change: transform;
+}
+
+.hero-image-wrapper {
+    position: relative;
+    width: 400px;
+    height: 400px;
+}
+
+/* Animated glow */
+.hero-image-glow {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 450px;
+    height: 450px;
+    background: conic-gradient(from 0deg,
+            var(--color-accent-primary),
+            var(--color-accent-secondary),
+            var(--color-accent-tertiary),
+            var(--color-accent-primary));
+    border-radius: 50%;
+    filter: blur(60px);
+    opacity: 0.3;
+    z-index: 0;
+    will-change: transform, opacity;
+}
+
+/* Rotating ring */
+.hero-image-ring {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 420px;
+    height: 420px;
+    border: 2px solid transparent;
+    border-top-color: var(--color-accent-primary);
+    border-right-color: var(--color-accent-secondary);
+    border-radius: 50%;
+    opacity: 0.3;
+    z-index: 0;
+    will-change: transform;
+}
+
+/* Profile image */
+.hero-image {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    overflow: hidden;
+    border: 4px solid rgba(0, 212, 255, 0.3);
+    box-shadow:
+        0 0 60px rgba(0, 212, 255, 0.4),
+        inset 0 0 40px rgba(0, 212, 255, 0.1);
+    transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+    z-index: 1;
+    will-change: transform;
+    transform: translateZ(0);
+    /* GPU acceleration */
+}
+
+.hero-image:hover {
+    border-color: rgba(0, 212, 255, 0.6);
+    box-shadow:
+        0 0 80px rgba(0, 212, 255, 0.6),
+        inset 0 0 60px rgba(0, 212, 255, 0.2);
+}
+
+.hero-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    filter: brightness(1.1) contrast(1.05);
+    transform: translateZ(0);
+    /* GPU acceleration */
+}
+
+/* Scroll Indicator */
+.scroll-indicator {
+    position: absolute;
+    bottom: var(--spacing-2xl);
+    left: 50%;
+    transform: translateX(-50%);
+    width: 2px;
+    height: 60px;
+    background: rgba(0, 212, 255, 0.2);
+    border-radius: var(--radius-full);
+    overflow: hidden;
+    z-index: 10;
+}
+
+.scroll-indicator-line {
+    width: 100%;
+    background: var(--gradient-primary);
+    border-radius: var(--radius-full);
+}
+
+/* Performance optimizations */
+@media (prefers-reduced-motion: reduce) {
+
+    .hero-grid,
+    .hero-orb,
+    .greeting-icon,
+    .hero-title-gradient,
+    .hero-image-glow,
+    .hero-image-ring,
+    .scroll-indicator-line {
+        animation: none !important;
+    }
+
+    * {
+        transition-duration: 0.01ms !important;
+        animation-duration: 0.01ms !important;
+    }
+}
+
+/* Responsive Design */
+@media (max-width: 1024px) {
+    .hero-content {
+        grid-template-columns: 1fr;
+        text-align: center;
+    }
+
+    .hero-text {
+        align-items: center;
+    }
+
+    .hero-description {
+        max-width: 100%;
+    }
+
+    .hero-cta {
+        justify-content: center;
+    }
+
+    .hero-social {
+        justify-content: center;
+    }
+
+    .hero-orb-1,
+    .hero-orb-2 {
+        width: 300px;
+        height: 300px;
+    }
+}
+
+@media (max-width: 768px) {
+    .hero {
+        padding: var(--spacing-2xl) var(--spacing-md);
+        padding-top: calc(var(--spacing-2xl) + 60px);
+    }
+
+    .hero-image-wrapper {
+        width: 300px;
+        height: 300px;
+    }
+
+    .hero-image-glow {
+        width: 350px;
+        height: 350px;
+    }
+
+    .hero-image-ring {
+        width: 320px;
+        height: 320px;
+    }
+
+    .hero-orb-1,
+    .hero-orb-2 {
+        width: 200px;
+        height: 200px;
+        filter: blur(60px);
+    }
+}
+
+@media (max-width: 480px) {
+    .hero-cta {
+        flex-direction: column;
+        width: 100%;
+    }
+
+    .btn {
+        width: 100%;
+        justify-content: center;
+    }
+
+    .hero-image-wrapper {
+        width: 250px;
+        height: 250px;
+    }
+
+    .hero-image-glow {
+        width: 300px;
+        height: 300px;
+    }
+
+    .hero-image-ring {
+        width: 270px;
+        height: 270px;
+    }
+}
