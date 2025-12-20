@@ -1,16 +1,68 @@
-# React + Vite
+<div align="center">
+  <h3>  Full-Stack Developer | Data Anlayst | AI & ML Enthusiast | UI/UX Designer </h3>
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+  <p align="center">
+    <a href="https://siddharthgoudgilakathi.vercel.app/"><b>Explore Portfolio »</b></a>
+    <br />
+    <br />
+    <a href="https://github.com/siddharthg-7">View Repositories</a>
+    ·
+    <a href="mailto:your-email@example.com">Contact Me</a>
+  </p>
+</div>
 
-Currently, two official plugins are available:
+---
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+###  About Me
+I am a passionate **Full-Stack Developer** dedicated to building scalable web applications and exploring the intersection of **Artificial Intelligence** and modern web technologies. My goal is to create seamless digital experiences that solve real-world problems.
 
-## React Compiler
+- I’m currently working on **Advanced Portfolio Features**
+- I’m currently learning **Next.js 14 & Large Language Models (LLMs)**
+- I’m looking to collaborate on **Open Source AI Projects**
+- Fun fact: I believe great UI is just as important as clean backend logic.
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+---
 
-## Expanding the ESLint configuration
+###  Tech Stack & Tools
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+<div align="left">
+  <img src="https://img.shields.io/badge/Frontend-React%20%26%20Next.js-61DAFB?style=for-the-badge&logo=react" />
+  <img src="https://img.shields.io/badge/Styling-Tailwind%20CSS-38B2AC?style=for-the-badge&logo=tailwind-css" />
+  <img src="https://img.shields.io/badge/Backend-Node.js%20%26%20Express-339933?style=for-the-badge&logo=nodedotjs" />
+  <img src="https://img.shields.io/badge/Database-MongoDB%20%26%20Firebase-47A248?style=for-the-badge&logo=mongodb" />
+  <img src="https://img.shields.io/badge/DevOps-Docker%20%26%20Vercel-000000?style=for-the-badge&logo=vercel" />
+  <img src="https://img.shields.io/badge/AI-Python%20%26%20TensorFlow-FF6F00?style=for-the-badge&logo=tensorflow" />
+</div>
+
+---
+
+### GitHub Stats & Activity
+<p align="center">
+  <img height="180em" src="https://github-readme-stats.vercel.app/api/top-langs/?username=siddharthg-7&layout=compact&theme=tokyonight&hide_border=false" />
+</p>
+
+---
+
+### Featured Projects
+
+| Project | Description | Tech Stack |
+| :--- | :--- | :--- |
+| **[Modern Portfolio](https://siddharthgoudgilakathi.vercel.app/)** | Professional portfolio showcasing my journey and skills. | Next.js, Framer Motion, Tailwind |
+| **[AI Web App]** | A description of your best AI-related project here. | Python, OpenAI, React |
+| **[E-Commerce Platform]** | Full-stack solution with payment integration. | Node.js, Stripe, MongoDB |
+
+---
+
+###  Connect with Me
+<p align="left">
+  <a href="https://linkedin.com/in/siddharthgoudgilakathi" target="blank"><img align="center" src="https://raw.githubusercontent.com/rahuldkjain/github-profile-readme-generator/master/src/images/icons/Social/linked-in-alt.svg" alt="Siddharth Goudgilakathi" height="30" width="40" /></a>
+  <a href="https://twitter.com/your-handle" target="blank"><img align="center" src="https://raw.githubusercontent.com/rahuldkjain/github-profile-readme-generator/master/src/images/icons/Social/twitter.svg" alt="your-handle" height="30" width="40" /></a>
+  <a href="https://instagram.com/your-handle" target="blank"><img align="center" src="https://raw.githubusercontent.com/rahuldkjain/github-profile-readme-generator/master/src/images/icons/Social/instagram.svg" alt="your-handle" height="30" width="40" /></a>
+</p>
+
+---
+
+<p align="center"> 
+  <i>"Code is like humor. When you have to explain it, it’s bad."</i><br>
+  <b>— Cory House</b>
+</p>
