@@ -56,7 +56,7 @@ const Projects = () => {
                 'Employer verification portal',
             ],
             tech: ['Solidity', 'Ethereum', 'React', 'IPFS'],
-            link: 'https://github.com/siddharthg-7/Decentralized-certificate-validation',
+            link: 'https://github.com/siddharthg-7/certification-validation-system-web3.0',
         },
     ];
 
