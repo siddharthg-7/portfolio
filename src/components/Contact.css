@@ -76,21 +76,14 @@
 }
 
 .form-group {
-    display: flex;
-    flex-direction: column;
-    gap: var(--spacing-xs);
-}
-
-.form-group label {
-    font-size: var(--text-sm);
-    color: var(--color-text-secondary);
-    font-weight: 600;
-    text-transform: uppercase;
-    letter-spacing: 0.05em;
+    position: relative;
+    /* Remove gap as label is now absolute */
+    margin-bottom: var(--spacing-sm);
 }
 
 .form-group input,
 .form-group textarea {
+    width: 100%;
     padding: var(--spacing-md);
     background: var(--color-bg-card);
     border: 1px solid rgba(255, 255, 255, 0.1);
@@ -99,18 +92,45 @@
     font-family: var(--font-primary);
     font-size: var(--text-base);
     transition: all 0.3s cubic-bezier(0.25, 0.1, 0.25, 1);
-    position: relative;
 }
 
-.form-group input::placeholder,
-.form-group textarea::placeholder {
+.form-group label {
+    position: absolute;
+    left: var(--spacing-md);
+    top: 50%;
+    /* Center vertically */
+    transform: translateY(-50%);
+    background: var(--color-bg-card);
+    /* Match input bg to mask border */
+    padding: 0 4px;
     color: var(--color-text-muted);
-    transition: opacity 0.2s ease;
+    font-size: var(--text-base);
+    font-weight: 500;
+    pointer-events: none;
+    transition: all 0.3s ease;
+    border-radius: 4px;
+    z-index: 10;
 }
 
-.form-group input:focus::placeholder,
-.form-group textarea:focus::placeholder {
-    opacity: 0.5;
+/* Textarea label starts at the top, not center */
+.form-group textarea+label {
+    top: var(--spacing-md);
+    transform: none;
+    padding-top: 0;
+    /* Align with text */
+}
+
+/* Floating State */
+.form-group input:focus+label,
+.form-group input:not(:placeholder-shown)+label,
+.form-group textarea:focus+label,
+.form-group textarea:not(:placeholder-shown)+label {
+    top: 0;
+    transform: translateY(-50%) scale(0.9);
+    color: var(--color-accent-primary);
+    font-weight: 600;
+    /* text-transform: uppercase; Optional based on previous design */
+    font-size: var(--text-sm);
 }
 
 .form-group input:focus,
@@ -121,7 +141,12 @@
         0 0 0 3px rgba(0, 212, 255, 0.1),
         0 4px 12px rgba(0, 212, 255, 0.15);
     background: rgba(18, 18, 26, 0.9);
-    transform: translateY(-1px);
+}
+
+/* Override background for label when input is focused/filled if input bg changes slightly */
+.form-group input:focus+label,
+.form-group textarea:focus+label {
+    background: rgba(18, 18, 26, 0.9);
 }
 
 .form-group textarea {

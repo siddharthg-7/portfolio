@@ -179,7 +179,6 @@ const Contact = () => {
                     transition={{ duration: duration.slow, delay: 0.3, ease: easing.enter }}
                 >
                     <div className="form-group">
-                        <label htmlFor="name">Name *</label>
                         <input
                             type="text"
                             id="name"
@@ -187,13 +186,13 @@ const Contact = () => {
                             value={formData.name}
                             onChange={handleChange}
                             required
-                            placeholder="Your name"
+                            placeholder=" "
                             disabled={isSubmitting}
                         />
+                        <label htmlFor="name">Name *</label>
                     </div>
 
                     <div className="form-group">
-                        <label htmlFor="email">Email *</label>
                         <input
                             type="email"
                             id="email"
@@ -201,22 +200,23 @@ const Contact = () => {
                             value={formData.email}
                             onChange={handleChange}
                             required
-                            placeholder="your.email@example.com"
+                            placeholder=" "
                             disabled={isSubmitting}
                         />
+                        <label htmlFor="email">Email *</label>
                     </div>
 
                     <div className="form-group">
-                        <label htmlFor="message">Message *</label>
                         <textarea
                             id="message"
                             name="message"
                             value={formData.message}
                             onChange={handleChange}
                             required
-                            placeholder="Your message..."
+                            placeholder=" "
                             disabled={isSubmitting}
                         />
+                        <label htmlFor="message">Message *</label>
                     </div>
 
                     <motion.button
