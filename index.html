@@ -3,7 +3,30 @@
 
 <head>
   <meta charset="UTF-8" />
-  <link rel="icon" type="image/png" href="./src/assets/image.png" />
+  <link rel="icon" type="image/png" href="/src/assets/image.png" />
+  <style>
+    body {
+      background-color: #0a0e27;
+      margin: 0;
+    }
+  </style>
+  <script>
+    window.onerror = function (msg, url, lineNo, columnNo, error) {
+      console.error('Window Error:', msg, url, lineNo, columnNo, error);
+      var display = document.createElement('div');
+      display.style.position = 'fixed';
+      display.style.top = '0';
+      display.style.left = '0';
+      display.style.width = '100%';
+      display.style.padding = '20px';
+      display.style.background = 'red';
+      display.style.color = 'white';
+      display.style.zIndex = '99999';
+      display.innerText = 'Initialization Error: ' + msg + '\n' + url + ':' + lineNo;
+      document.body.appendChild(display);
+      return false;
+    };
+  </script>
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
   <!-- SEO Meta Tags -->
