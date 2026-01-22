@@ -4,10 +4,15 @@
 <head>
   <meta charset="UTF-8" />
   <link rel="icon" type="image/png" href="/src/assets/image.png" />
+  <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
+  <meta http-equiv="Pragma" content="no-cache" />
+  <meta http-equiv="Expires" content="0" />
   <style>
     body {
       background-color: #0a0e27;
       margin: 0;
+      color: white;
+      font-family: sans-serif;
     }
   </style>
   <script>
@@ -50,6 +55,26 @@
         '<button onclick="localStorage.clear(); sessionStorage.clear(); location.reload(true);" style="margin-left:10px; cursor:pointer; padding:2px 10px;">Clear Cache & Retry</button>';
       return false;
     };
+
+    // Failsafe: if nothing renders in 6 seconds, show a manual refresh trigger
+    setTimeout(function () {
+      if (!document.getElementById('root') || document.getElementById('root').innerHTML === '') {
+        var failsafe = document.createElement('div');
+        failsafe.style.position = 'fixed';
+        failsafe.style.bottom = '20px';
+        failsafe.style.right = '20px';
+        failsafe.style.padding = '20px';
+        failsafe.style.background = 'rgba(0, 240, 255, 0.1)';
+        failsafe.style.border = '1px solid #00f0ff';
+        failsafe.style.color = '#00f0ff';
+        failsafe.style.zIndex = '100000';
+        failsafe.style.borderRadius = '8px';
+        failsafe.style.backdropFilter = 'blur(10px)';
+        failsafe.innerHTML = '<p style="margin:0 0 10px 0">Still seeing a blank page?</p>' +
+          '<button onclick="location.reload(true)" style="background:#00f0ff; border:none; color:#0a0e27; padding:8px 15px; border-radius:4px; cursor:pointer; font-weight:bold">Force Update Site</button>';
+        document.body.appendChild(failsafe);
+      }
+    }, 6000);
   </script>
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
