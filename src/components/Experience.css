@@ -2,20 +2,25 @@
     background: linear-gradient(180deg, rgba(18, 18, 26, 0.2) 0%, transparent 100%);
 }
 
-.experience-timeline {
+.experience-timeline-container {
     max-width: 900px;
     margin: var(--spacing-2xl) auto 0;
     position: relative;
 }
 
-.experience-timeline::before {
-    content: '';
+.timeline-line-animated {
     position: absolute;
     left: 0;
     top: 0;
-    bottom: 0;
+    bottom: 0px;
     width: 2px;
     background: var(--gradient-primary);
+    z-index: 0;
+    box-shadow: 0 0 15px rgba(0, 240, 255, 0.3);
+}
+
+.experience-timeline {
+    position: relative;
 }
 
 .experience-item {

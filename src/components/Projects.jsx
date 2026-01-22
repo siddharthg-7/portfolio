@@ -1,27 +1,38 @@
-import { motion, useInView } from 'framer-motion';
+import { motion, useInView, useScroll, useTransform } from 'framer-motion';
 import { useRef, useState } from 'react';
 import { FaExternalLinkAlt, FaGithub } from 'react-icons/fa';
 import {
-    fadeInUp,
-    staggerContainer,
     duration,
     easing,
-    hoverLift,
     tapScale,
-    scrollReveal,
     isTouchDevice,
+    isMobileDevice,
 } from '../utils/motionConfig';
 import './Projects.css';
+
+// Import project images
+import busTrackerImg from '../assets/projects/bus_tracker.png';
+import trustlinkImg from '../assets/projects/trustlink.png';
+import blockchainImg from '../assets/projects/blockchain.png';
 
 const Projects = () => {
     const ref = useRef(null);
     const isInView = useInView(ref, { once: true, margin: '-100px' });
     const [hoveredCard, setHoveredCard] = useState(null);
 
+    // Parallax effect
+    const { scrollYProgress } = useScroll({
+        target: ref,
+        offset: ["start end", "end start"]
+    });
+
+    const parallaxY = useTransform(scrollYProgress, [0, 1], isMobileDevice() ? [0, 0] : [30, -30]);
+
     const projects = [
         {
             title: 'Bus Tracker Application',
             status: 'Ongoing',
+            image: busTrackerImg,
             description: 'Real-time GPS tracking system for college buses with dual interfaces for drivers and students.',
             features: [
                 'Real-time GPS tracking',
@@ -33,8 +44,9 @@ const Projects = () => {
             link: 'https://github.com/siddharthg-7/College-Bus-Tracking-Attendance-System',
         },
         {
-            title: 'TrustLink – Secure Opportunity Verifier',
+            title: 'TrustLink – Opportunity Verifier',
             status: 'Completed',
+            image: trustlinkImg,
             description: 'Platform to detect fake internship and job offers with scam detection capabilities.',
             features: [
                 'Fraud indicator detection',
@@ -46,8 +58,9 @@ const Projects = () => {
             link: 'https://github.com/siddharthg-7/Trustlink-updated-version',
         },
         {
-            title: 'Decentralized Certificate Validation System',
+            title: 'Decentralized Certificate System',
             status: 'Completed',
+            image: blockchainImg,
             description: 'Blockchain-based academic certificate verification using Ethereum and IPFS.',
             features: [
                 'Ethereum hash storage',
@@ -60,7 +73,7 @@ const Projects = () => {
         },
     ];
 
-    // Enhanced stagger configuration for cards
+    // Stagger configuration for cards
     const containerVariants = {
         initial: { opacity: 0 },
         animate: {
@@ -111,7 +124,6 @@ const Projects = () => {
         },
     };
 
-    // Tech chip hover animation (only on desktop)
     const getTechChipAnimation = (cardIndex) => {
         if (isTouchDevice()) return {};
         return hoveredCard === cardIndex ? { y: -3, scale: 1.05 } : { y: 0, scale: 1 };
@@ -136,6 +148,7 @@ const Projects = () => {
                 variants={containerVariants}
                 initial="initial"
                 animate={isInView ? 'animate' : 'initial'}
+                style={{ y: parallaxY }}
             >
                 {projects.map((project, index) => (
                     <motion.div
@@ -153,7 +166,13 @@ const Projects = () => {
                         onHoverStart={() => setHoveredCard(index)}
                         onHoverEnd={() => setHoveredCard(null)}
                     >
-                        {/* Status badge with animation */}
+                        {/* Project Image */}
+                        <div className="project-image-container">
+                            <img src={project.image} alt={project.title} className="project-card-image" />
+                            <div className="project-image-overlay"></div>
+                        </div>
+
+                        {/* Status badge */}
                         <motion.span
                             className={`project-status ${project.status.toLowerCase()}`}
                             initial={{ opacity: 0, scale: 0.8 }}
@@ -183,12 +202,10 @@ const Projects = () => {
                             {project.description}
                         </motion.p>
 
-                        {/* Features with stagger */}
+                        {/* Features */}
                         <motion.ul
                             className="project-features"
                             variants={featureListVariants}
-                            initial="initial"
-                            animate={isInView ? 'animate' : 'initial'}
                         >
                             {project.features.map((feature, featureIndex) => (
                                 <motion.li
@@ -200,7 +217,7 @@ const Projects = () => {
                             ))}
                         </motion.ul>
 
-                        {/* Tech stack with hover animation */}
+                        {/* Tech stack */}
                         <motion.div
                             className="project-tech"
                             initial={{ opacity: 0 }}
@@ -227,7 +244,7 @@ const Projects = () => {
                             ))}
                         </motion.div>
 
-                        {/* GitHub link with enhanced animation */}
+                        {/* GitHub link */}
                         {project.link && (
                             <motion.a
                                 href={project.link}

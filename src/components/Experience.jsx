@@ -1,12 +1,23 @@
-import { motion, useInView } from 'framer-motion';
+import { motion, useInView, useScroll, useSpring } from 'framer-motion';
 import { useRef, useState } from 'react';
 import { FaCalendarAlt, FaCheckCircle } from 'react-icons/fa';
 import { duration, easing, isTouchDevice } from '../utils/motionConfig';
 import './Experience.css';
 
 const Experience = () => {
-    const ref = useRef(null);
-    const isInView = useInView(ref, { once: true, margin: '-100px' });
+    const sectionRef = useRef(null);
+    const { scrollYProgress } = useScroll({
+        target: sectionRef,
+        offset: ["start end", "end end"]
+    });
+
+    const scaleY = useSpring(scrollYProgress, {
+        stiffness: 100,
+        damping: 30,
+        restDelta: 0.001
+    });
+
+    const isInView = useInView(sectionRef, { once: true, margin: '-100px' });
     const [hoveredItem, setHoveredItem] = useState(null);
 
     const experiences = [
@@ -80,7 +91,7 @@ const Experience = () => {
     };
 
     return (
-        <section id="experience" className="section experience-section" ref={ref}>
+        <section id="experience" className="section experience-section" ref={sectionRef}>
             <motion.div
                 className="section-header"
                 initial={{ opacity: 0, y: 30 }}
@@ -93,85 +104,93 @@ const Experience = () => {
                 </p>
             </motion.div>
 
-            <motion.div
-                className="experience-timeline"
-                variants={containerVariants}
-                initial="hidden"
-                animate={isInView ? 'visible' : 'hidden'}
-            >
-                {experiences.map((exp, index) => (
-                    <motion.div
-                        key={index}
-                        className="experience-item"
-                        variants={itemVariants}
-                        whileHover={{
-                            x: 10,
-                            transition: { duration: duration.fast }
-                        }}
-                        onHoverStart={() => setHoveredItem(index)}
-                        onHoverEnd={() => setHoveredItem(null)}
-                    >
-                        {/* Animated timeline dot */}
+            <div className="experience-timeline-container">
+                {/* Animated timeline line */}
+                <motion.div
+                    className="timeline-line-animated"
+                    style={{ scaleY, transformOrigin: "top" }}
+                />
+
+                <motion.div
+                    className="experience-timeline"
+                    variants={containerVariants}
+                    initial="hidden"
+                    animate={isInView ? 'visible' : 'hidden'}
+                >
+                    {experiences.map((exp, index) => (
                         <motion.div
-                            className="timeline-dot"
-                            variants={dotVariants}
-                            initial="initial"
-                            animate={hoveredItem === index && !isTouchDevice() ? "hover" : "initial"}
-                        />
+                            key={index}
+                            className="experience-item"
+                            variants={itemVariants}
+                            whileHover={{
+                                x: 10,
+                                transition: { duration: duration.fast }
+                            }}
+                            onHoverStart={() => setHoveredItem(index)}
+                            onHoverEnd={() => setHoveredItem(null)}
+                        >
+                            {/* Animated timeline dot */}
+                            <motion.div
+                                className="timeline-dot"
+                                variants={dotVariants}
+                                initial="initial"
+                                animate={hoveredItem === index && !isTouchDevice() ? "hover" : "initial"}
+                            />
 
-                        <div className="experience-content">
-                            <div className="experience-header">
-                                <motion.h3
-                                    className="experience-title"
-                                    initial={{ opacity: 0 }}
-                                    animate={{ opacity: 1 }}
-                                    transition={{ delay: 0.2 + index * 0.1 }}
-                                >
-                                    {exp.title}
-                                </motion.h3>
-                                <motion.div
-                                    className="experience-date"
-                                    initial={{ opacity: 0, scale: 0.9 }}
-                                    animate={{ opacity: 1, scale: 1 }}
-                                    transition={{ delay: 0.3 + index * 0.1 }}
-                                >
-                                    <FaCalendarAlt size={16} />
-                                    <span>{exp.date}</span>
-                                </motion.div>
-                            </div>
-
-                            <motion.ul
-                                className="experience-description"
-                                variants={pointsVariants}
-                                initial="hidden"
-                                animate={isInView ? "visible" : "hidden"}
-                            >
-                                {exp.points.map((point, pointIndex) => (
-                                    <motion.li
-                                        key={pointIndex}
-                                        variants={pointVariants}
+                            <div className="experience-content">
+                                <div className="experience-header">
+                                    <motion.h3
+                                        className="experience-title"
+                                        initial={{ opacity: 0 }}
+                                        animate={{ opacity: 1 }}
+                                        transition={{ delay: 0.2 + index * 0.1 }}
                                     >
-                                        <motion.span
-                                            className="point-icon"
-                                            initial={{ scale: 0 }}
-                                            animate={{ scale: 1 }}
-                                            transition={{
-                                                delay: 0.4 + index * 0.1 + pointIndex * 0.1,
-                                                type: "spring",
-                                                stiffness: 200,
-                                                damping: 15
-                                            }}
+                                        {exp.title}
+                                    </motion.h3>
+                                    <motion.div
+                                        className="experience-date"
+                                        initial={{ opacity: 0, scale: 0.9 }}
+                                        animate={{ opacity: 1, scale: 1 }}
+                                        transition={{ delay: 0.3 + index * 0.1 }}
+                                    >
+                                        <FaCalendarAlt size={16} />
+                                        <span>{exp.date}</span>
+                                    </motion.div>
+                                </div>
+
+                                <motion.ul
+                                    className="experience-description"
+                                    variants={pointsVariants}
+                                    initial="hidden"
+                                    animate={isInView ? "visible" : "hidden"}
+                                >
+                                    {exp.points.map((point, pointIndex) => (
+                                        <motion.li
+                                            key={pointIndex}
+                                            variants={pointVariants}
                                         >
-                                            <FaCheckCircle size={16} />
-                                        </motion.span>
-                                        {point}
-                                    </motion.li>
-                                ))}
-                            </motion.ul>
-                        </div>
-                    </motion.div>
-                ))}
-            </motion.div>
+                                            <motion.span
+                                                className="point-icon"
+                                                initial={{ scale: 0 }}
+                                                animate={{ scale: 1 }}
+                                                transition={{
+                                                    delay: 0.4 + index * 0.1 + pointIndex * 0.1,
+                                                    type: "spring",
+                                                    stiffness: 200,
+                                                    damping: 15
+                                                }}
+                                            >
+                                                <FaCheckCircle size={16} />
+                                            </motion.span>
+                                            {point}
+                                        </motion.li>
+                                    ))}
+                                </motion.ul>
+                            </div>
+                        </motion.div>
+                    ))}
+                </motion.div>
+            </div>
         </section>
     );
 };

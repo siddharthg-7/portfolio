@@ -3,124 +3,211 @@ import './ParticleBackground.css';
 
 export default function ParticleBackground() {
     const canvasRef = useRef(null);
+    const containerRef = useRef(null);
 
     useEffect(() => {
         const canvas = canvasRef.current;
-        if (!canvas) return;
+        const container = containerRef.current;
+        if (!canvas || !container) return;
 
         const ctx = canvas.getContext('2d');
         let animationFrameId;
         let particles = [];
+        let interactionParticle = null;
+        let mouseIsDown = false;
+        let createIntervalId = null;
+
+        const options = {
+            velocity: 1.2,
+            density: 12000,
+            netLineDistance: 180,
+            netLineColor: 'rgba(0, 240, 255, 0.15)',
+            particleColors: ['#00f0ff', '#bd00ff', '#ffffff']
+        };
 
         const resizeCanvas = () => {
-            canvas.width = window.innerWidth;
-            canvas.height = window.innerHeight;
+            canvas.width = container.offsetWidth;
+            canvas.height = container.offsetHeight;
+            createParticles(false);
         };
 
         class Particle {
-            constructor() {
-                this.x = Math.random() * canvas.width;
-                this.y = Math.random() * canvas.height;
-                this.z = Math.random() * 1000;
-                this.vx = (Math.random() - 0.5) * 0.5;
-                this.vy = (Math.random() - 0.5) * 0.5;
-                this.vz = Math.random() * 2 + 1;
-                this.size = Math.random() * 2 + 1;
-                this.color = Math.random() > 0.5 ? '#00f0ff' : '#bd00ff';
-                this.opacity = Math.random() * 0.5 + 0.3;
+            constructor(x, y) {
+                this.x = x || Math.random() * canvas.width;
+                this.y = y || Math.random() * canvas.height;
+                this.radius = Math.random() * 1.5 + 1;
+                this.color = options.particleColors[Math.floor(Math.random() * options.particleColors.length)];
+                this.opacity = 0;
+                this.velocity = {
+                    x: (Math.random() - 0.5) * options.velocity,
+                    y: (Math.random() - 0.5) * options.velocity
+                };
             }
 
             update() {
-                this.z -= this.vz;
-                if (this.z <= 0) {
-                    this.z = 1000;
-                    this.x = Math.random() * canvas.width;
-                    this.y = Math.random() * canvas.height;
-                }
+                if (this.opacity < 1) this.opacity += 0.02;
 
-                this.x += this.vx;
-                this.y += this.vy;
+                if (this.x > canvas.width + 100 || this.x < -100) this.velocity.x = -this.velocity.x;
+                if (this.y > canvas.height + 100 || this.y < -100) this.velocity.y = -this.velocity.y;
 
-                if (this.x < 0 || this.x > canvas.width) this.vx *= -1;
-                if (this.y < 0 || this.y > canvas.height) this.vy *= -1;
+                this.x += this.velocity.x;
+                this.y += this.velocity.y;
             }
 
             draw() {
-                const scale = 1000 / (1000 - this.z);
-                const x2d = (this.x - canvas.width / 2) * scale + canvas.width / 2;
-                const y2d = (this.y - canvas.height / 2) * scale + canvas.height / 2;
-                const size = this.size * scale;
-
                 ctx.beginPath();
-                ctx.arc(x2d, y2d, size, 0, Math.PI * 2);
                 ctx.fillStyle = this.color;
-                ctx.globalAlpha = this.opacity * (1 - this.z / 1000);
-                ctx.fill();
-                ctx.globalAlpha = 1;
-
-                const gradient = ctx.createRadialGradient(x2d, y2d, 0, x2d, y2d, size * 3);
-                gradient.addColorStop(0, this.color + '40');
-                gradient.addColorStop(1, 'transparent');
-                ctx.fillStyle = gradient;
-                ctx.beginPath();
-                ctx.arc(x2d, y2d, size * 3, 0, Math.PI * 2);
+                ctx.globalAlpha = this.opacity * 0.6;
+                ctx.arc(this.x, this.y, this.radius, 0, 2 * Math.PI);
                 ctx.fill();
             }
         }
 
-        const init = () => {
+        const createParticles = (isInitial) => {
             particles = [];
-            for (let i = 0; i < 100; i++) {
-                particles.push(new Particle());
-            }
-        };
+            const quantity = (canvas.width * canvas.height) / options.density;
 
-        const connectParticles = () => {
-            for (let i = 0; i < particles.length; i++) {
-                for (let j = i + 1; j < particles.length; j++) {
-                    const dx = particles[i].x - particles[j].x;
-                    const dy = particles[i].y - particles[j].y;
-                    const distance = Math.sqrt(dx * dx + dy * dy);
-
-                    if (distance < 150) {
-                        ctx.beginPath();
-                        ctx.strokeStyle = '#00f0ff';
-                        ctx.globalAlpha = (1 - distance / 150) * 0.2;
-                        ctx.lineWidth = 0.5;
-                        ctx.moveTo(particles[i].x, particles[i].y);
-                        ctx.lineTo(particles[j].x, particles[j].y);
-                        ctx.stroke();
-                        ctx.globalAlpha = 1;
+            if (isInitial) {
+                let counter = 0;
+                if (createIntervalId) clearInterval(createIntervalId);
+                createIntervalId = setInterval(() => {
+                    if (counter < quantity - 1) {
+                        particles.push(new Particle());
+                    } else {
+                        clearInterval(createIntervalId);
                     }
+                    counter++;
+                }, 100);
+            } else {
+                for (let i = 0; i < quantity; i++) {
+                    particles.push(new Particle());
                 }
             }
         };
 
-        const animate = () => {
-            ctx.fillStyle = 'rgba(10, 14, 39, 0.1)';
-            ctx.fillRect(0, 0, canvas.width, canvas.height);
+        const update = () => {
+            if (!ctx) return;
 
-            particles.forEach(particle => {
-                particle.update();
-                particle.draw();
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+            // Draw connections
+            for (let i = 0; i < particles.length; i++) {
+                for (let j = i + 1; j < particles.length; j++) {
+                    const p1 = particles[i];
+                    const p2 = particles[j];
+
+                    const dx = Math.abs(p1.x - p2.x);
+                    const dy = Math.abs(p1.y - p2.y);
+
+                    if (dx > options.netLineDistance || dy > options.netLineDistance) continue;
+
+                    const distance = Math.sqrt(dx * dx + dy * dy);
+                    if (distance < options.netLineDistance) {
+                        ctx.beginPath();
+                        ctx.strokeStyle = options.netLineColor;
+                        ctx.globalAlpha = ((options.netLineDistance - distance) / options.netLineDistance) * p1.opacity * p2.opacity * 0.5;
+                        ctx.lineWidth = 0.5;
+                        ctx.moveTo(p1.x, p1.y);
+                        ctx.lineTo(p2.x, p2.y);
+                        ctx.stroke();
+                    }
+                }
+            }
+
+            // Update and draw particles
+            particles.forEach(p => {
+                p.update();
+                p.draw();
             });
 
-            connectParticles();
+            animationFrameId = requestAnimationFrame(update);
+        };
 
-            animationFrameId = requestAnimationFrame(animate);
+        // Interaction Handlers
+        const handleMouseMove = (e) => {
+            const rect = canvas.getBoundingClientRect();
+            if (!interactionParticle) {
+                interactionParticle = new Particle(e.clientX - rect.left, e.clientY - rect.top);
+                interactionParticle.velocity = { x: 0, y: 0 };
+                interactionParticle.opacity = 1;
+                particles.push(interactionParticle);
+            } else {
+                interactionParticle.x = e.clientX - rect.left;
+                interactionParticle.y = e.clientY - rect.top;
+            }
+        };
+
+        const handleMouseDown = () => {
+            mouseIsDown = true;
+            const interval = setInterval(() => {
+                if (mouseIsDown && interactionParticle) {
+                    for (let i = 0; i < 2; i++) {
+                        particles.push(new Particle(interactionParticle.x, interactionParticle.y));
+                    }
+                } else {
+                    clearInterval(interval);
+                }
+            }, 50);
+        };
+
+        const handleMouseUp = () => { mouseIsDown = false; };
+
+        const handleMouseOut = () => {
+            if (interactionParticle) {
+                const index = particles.indexOf(interactionParticle);
+                if (index > -1) particles.splice(index, 1);
+                interactionParticle = null;
+            }
+        };
+
+        // Touch Handlers
+        const handleTouchMove = (e) => {
+            if (e.touches.length > 0) {
+                const rect = canvas.getBoundingClientRect();
+                const touch = e.touches[0];
+                if (!interactionParticle) {
+                    interactionParticle = new Particle(touch.clientX - rect.left, touch.clientY - rect.top);
+                    interactionParticle.velocity = { x: 0, y: 0 };
+                    interactionParticle.opacity = 1;
+                    particles.push(interactionParticle);
+                } else {
+                    interactionParticle.x = touch.clientX - rect.left;
+                    interactionParticle.y = touch.clientY - rect.top;
+                }
+            }
         };
 
         resizeCanvas();
-        init();
-        animate();
+        createParticles(true);
+        update();
 
         window.addEventListener('resize', resizeCanvas);
+        canvas.addEventListener('mousemove', handleMouseMove);
+        canvas.addEventListener('mousedown', handleMouseDown);
+        window.addEventListener('mouseup', handleMouseUp);
+        canvas.addEventListener('mouseout', handleMouseOut);
+        canvas.addEventListener('touchmove', handleTouchMove, { passive: true });
+        canvas.addEventListener('touchend', handleMouseOut);
 
         return () => {
             window.removeEventListener('resize', resizeCanvas);
+            canvas.removeEventListener('mousemove', handleMouseMove);
+            canvas.removeEventListener('mousedown', handleMouseDown);
+            window.removeEventListener('mouseup', handleMouseUp);
+            canvas.removeEventListener('mouseout', handleMouseOut);
+            canvas.removeEventListener('touchmove', handleTouchMove);
+            canvas.removeEventListener('touchend', handleMouseOut);
             cancelAnimationFrame(animationFrameId);
+            if (createIntervalId) clearInterval(createIntervalId);
         };
     }, []);
 
-    return <canvas ref={canvasRef} className="particle-background" />;
+    return (
+        <div className="particle-network-container" ref={containerRef}>
+            <div className="glow glow-1"></div>
+            <div className="glow glow-2 glow-purple"></div>
+            <div className="glow glow-3"></div>
+            <canvas ref={canvasRef} className="particle-canvas" />
+        </div>
+    );
 }

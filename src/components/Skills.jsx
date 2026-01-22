@@ -1,10 +1,19 @@
-import { motion, useInView } from 'framer-motion';
+import { motion, useInView, useScroll, useTransform } from 'framer-motion';
 import { useRef } from 'react';
+import { isMobileDevice } from '../utils/motionConfig';
 import './Skills.css';
 
 const Skills = () => {
     const ref = useRef(null);
     const isInView = useInView(ref, { once: true, margin: '-100px' });
+
+    // Parallax effect
+    const { scrollYProgress } = useScroll({
+        target: ref,
+        offset: ["start end", "end start"]
+    });
+
+    const parallaxY = useTransform(scrollYProgress, [0, 1], isMobileDevice() ? [0, 0] : [15, -15]);
 
     const skillCategories = [
         {
@@ -106,6 +115,7 @@ const Skills = () => {
                 variants={containerVariants}
                 initial="hidden"
                 animate={isInView ? 'visible' : 'hidden'}
+                style={{ y: parallaxY }}
             >
                 {skillCategories.map((category, index) => (
                     <motion.div

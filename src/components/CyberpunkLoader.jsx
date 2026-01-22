@@ -3,7 +3,10 @@ import './CyberpunkLoader.css';
 
 export default function CyberpunkLoader() {
     return (
-        <div className="cyberpunk-loader-container">
+        <motion.div
+            className="cyberpunk-loader-container"
+            exit={{ opacity: 0, transition: { duration: 0.5 } }}
+        >
             <div className="cyberpunk-loader">
                 <motion.div
                     className="loader-ring loader-ring-outer"
@@ -47,6 +50,6 @@ export default function CyberpunkLoader() {
             >
                 Loading...
             </motion.p>
-        </div>
+        </motion.div>
     );
 }

@@ -1,14 +1,23 @@
-import { motion } from 'framer-motion';
+import { motion, useScroll, useTransform } from 'framer-motion';
 import { useInView } from 'framer-motion';
 import { useRef, useState } from 'react';
 import { FaGraduationCap, FaCode, FaLightbulb } from 'react-icons/fa';
-import { duration, easing, isTouchDevice } from '../utils/motionConfig';
+import { duration, easing, isTouchDevice, isMobileDevice } from '../utils/motionConfig';
 import './About.css';
 
 const About = () => {
     const ref = useRef(null);
     const isInView = useInView(ref, { once: true, margin: '-100px' });
     const [hoveredCard, setHoveredCard] = useState(null);
+
+    // Parallax effect
+    const { scrollYProgress } = useScroll({
+        target: ref,
+        offset: ["start end", "end start"]
+    });
+
+    // Subtle movement (20px up on scroll)
+    const parallaxY = useTransform(scrollYProgress, [0, 1], isMobileDevice() ? [0, 0] : [20, -20]);
 
     const containerVariants = {
         hidden: { opacity: 0 },
@@ -111,6 +120,7 @@ const About = () => {
                 variants={containerVariants}
                 initial="hidden"
                 animate={isInView ? 'visible' : 'hidden'}
+                style={{ y: parallaxY }}
             >
                 {aboutCards.map((card, index) => (
                     <motion.div
