@@ -1,5 +1,12 @@
 .contact-section {
     background: rgba(18, 18, 26, 0.4);
+    position: relative;
+    overflow: hidden;
+}
+
+.contact-section .section-header {
+    position: relative;
+    z-index: 2;
 }
 
 .contact-grid {
@@ -7,6 +14,8 @@
     grid-template-columns: 1fr 1fr;
     gap: var(--spacing-3xl);
     margin-top: var(--spacing-2xl);
+    position: relative;
+    z-index: 2;
 }
 
 .contact-info {
@@ -141,6 +150,8 @@
         0 0 0 3px rgba(0, 212, 255, 0.1),
         0 4px 12px rgba(0, 212, 255, 0.15);
     background: rgba(18, 18, 26, 0.9);
+    position: relative;
+    z-index: 2;
 }
 
 /* Override background for label when input is focused/filled if input bg changes slightly */
@@ -162,6 +173,8 @@
 
 .contact-form button {
     margin-top: var(--spacing-sm);
+    position: relative;
+    z-index: 2;
 }
 
 .contact-form button:disabled {
@@ -194,6 +207,8 @@
     border-radius: var(--radius-sm);
     font-weight: 500;
     margin-top: var(--spacing-sm);
+    position: relative;
+    z-index: 2;
 }
 
 .submit-success {
@@ -220,4 +235,30 @@
         flex-direction: column;
         text-align: center;
     }
+}
+
+.contact-form-wrapper {
+    position: relative;
+    width: 100%;
+}
+
+.contact-animation-container {
+    position: absolute;
+    top: 38%;
+    /* Shifted up to center behind all fields more accurately */
+    left: 50%;
+    /* transform handled by Framer Motion to avoid conflict */
+    width: 180%;
+    /* Even larger to ensure full background coverage */
+    max-width: 1300px;
+    height: auto;
+    pointer-events: none;
+    z-index: 1;
+    opacity: 0.3;
+}
+
+.contact-lottie {
+    width: 100%;
+    height: auto;
+    filter: blur(1.5px);
 }

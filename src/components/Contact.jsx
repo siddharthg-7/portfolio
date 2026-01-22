@@ -8,6 +8,7 @@ import {
     easing,
     tapScale,
 } from '../utils/motionConfig';
+import { DotLottieReact } from '@lottiefiles/dotlottie-react';
 import './Contact.css';
 
 const Contact = () => {
@@ -170,105 +171,121 @@ const Contact = () => {
                     ))}
                 </motion.div>
 
-                <motion.form
-                    ref={formRef}
-                    className="contact-form"
-                    onSubmit={handleSubmit}
-                    initial={{ opacity: 0, x: 30 }}
-                    animate={isInView ? { opacity: 1, x: 0 } : {}}
-                    transition={{ duration: duration.slow, delay: 0.3, ease: easing.enter }}
-                >
-                    <div className="form-group">
-                        <input
-                            type="text"
-                            id="name"
-                            name="name"
-                            value={formData.name}
-                            onChange={handleChange}
-                            required
-                            placeholder=" "
-                            disabled={isSubmitting}
-                        />
-                        <label htmlFor="name">Name *</label>
-                    </div>
-
-                    <div className="form-group">
-                        <input
-                            type="email"
-                            id="email"
-                            name="email"
-                            value={formData.email}
-                            onChange={handleChange}
-                            required
-                            placeholder=" "
-                            disabled={isSubmitting}
-                        />
-                        <label htmlFor="email">Email *</label>
-                    </div>
-
-                    <div className="form-group">
-                        <textarea
-                            id="message"
-                            name="message"
-                            value={formData.message}
-                            onChange={handleChange}
-                            required
-                            placeholder=" "
-                            disabled={isSubmitting}
-                        />
-                        <label htmlFor="message">Message *</label>
-                    </div>
-
-                    <motion.button
-                        type="submit"
-                        className="btn btn-primary"
-                        disabled={isSubmitting}
-                        whileHover={!isSubmitting ? { scale: 1.02 } : {}}
-                        whileTap={!isSubmitting ? tapScale : {}}
+                <div className="contact-form-wrapper" style={{ position: 'relative' }}>
+                    <motion.form
+                        ref={formRef}
+                        className="contact-form"
+                        onSubmit={handleSubmit}
+                        initial={{ opacity: 0, x: 30 }}
+                        animate={isInView ? { opacity: 1, x: 0 } : {}}
+                        transition={{ duration: duration.slow, delay: 0.3, ease: easing.enter }}
                     >
-                        {isSubmitting ? (
-                            <>
-                                <motion.div
-                                    className="spinner"
-                                    animate={{ rotate: 360 }}
-                                    transition={{ duration: 1, repeat: Infinity, ease: "linear" }}
-                                />
-                                Sending...
-                            </>
-                        ) : (
-                            <>
-                                Send Message
-                                <FaPaperPlane size={18} />
-                            </>
+                        <div className="form-group">
+                            <input
+                                type="text"
+                                id="name"
+                                name="name"
+                                value={formData.name}
+                                onChange={handleChange}
+                                required
+                                placeholder=" "
+                                disabled={isSubmitting}
+                            />
+                            <label htmlFor="name">Name *</label>
+                        </div>
+
+                        <div className="form-group">
+                            <input
+                                type="email"
+                                id="email"
+                                name="email"
+                                value={formData.email}
+                                onChange={handleChange}
+                                required
+                                placeholder=" "
+                                disabled={isSubmitting}
+                            />
+                            <label htmlFor="email">Email *</label>
+                        </div>
+
+                        <div className="form-group">
+                            <textarea
+                                id="message"
+                                name="message"
+                                value={formData.message}
+                                onChange={handleChange}
+                                required
+                                placeholder=" "
+                                disabled={isSubmitting}
+                            />
+                            <label htmlFor="message">Message *</label>
+                        </div>
+
+                        <motion.button
+                            type="submit"
+                            className="btn btn-primary"
+                            disabled={isSubmitting}
+                            whileHover={!isSubmitting ? { scale: 1.02 } : {}}
+                            whileTap={!isSubmitting ? tapScale : {}}
+                        >
+                            {isSubmitting ? (
+                                <>
+                                    <motion.div
+                                        className="spinner"
+                                        animate={{ rotate: 360 }}
+                                        transition={{ duration: 1, repeat: Infinity, ease: "linear" }}
+                                    />
+                                    Sending...
+                                </>
+                            ) : (
+                                <>
+                                    Send Message
+                                    <FaPaperPlane size={18} />
+                                </>
+                            )}
+                        </motion.button>
+
+                        {/* Success Message */}
+                        {submitStatus === 'success' && (
+                            <motion.div
+                                className="submit-message submit-success"
+                                initial={{ opacity: 0, y: -10 }}
+                                animate={{ opacity: 1, y: 0 }}
+                                exit={{ opacity: 0 }}
+                            >
+                                <FaCheckCircle size={20} />
+                                <span>Message sent successfully! I'll get back to you soon.</span>
+                            </motion.div>
                         )}
-                    </motion.button>
 
-                    {/* Success Message */}
-                    {submitStatus === 'success' && (
-                        <motion.div
-                            className="submit-message submit-success"
-                            initial={{ opacity: 0, y: -10 }}
-                            animate={{ opacity: 1, y: 0 }}
-                            exit={{ opacity: 0 }}
-                        >
-                            <FaCheckCircle size={20} />
-                            <span>Message sent successfully! I'll get back to you soon.</span>
-                        </motion.div>
-                    )}
+                        {/* Error Message */}
+                        {submitStatus === 'error' && (
+                            <motion.div
+                                className="submit-message submit-error"
+                                initial={{ opacity: 0, y: -10 }}
+                                animate={{ opacity: 1, y: 0 }}
+                                exit={{ opacity: 0 }}
+                            >
+                                <FaExclamationCircle size={20} />
+                                <span>Failed to send message. Please try again or email me directly.</span>
+                            </motion.div>
+                        )}
+                    </motion.form>
 
-                    {/* Error Message */}
-                    {submitStatus === 'error' && (
-                        <motion.div
-                            className="submit-message submit-error"
-                            initial={{ opacity: 0, y: -10 }}
-                            animate={{ opacity: 1, y: 0 }}
-                            exit={{ opacity: 0 }}
-                        >
-                            <FaExclamationCircle size={20} />
-                            <span>Failed to send message. Please try again or email me directly.</span>
-                        </motion.div>
-                    )}
-                </motion.form>
+                    <motion.div
+                        className="contact-animation-container"
+                        initial={{ opacity: 0, scale: 0.8, x: "-50%", y: "-50%" }}
+                        animate={isInView ? { opacity: 1, scale: 1, x: "-50%", y: "-50%" } : {}}
+                        transition={{ duration: 0.8, delay: 0.5 }}
+                    >
+                        <DotLottieReact
+                            src="https://lottie.host/91b8b286-c14e-44fb-856d-e353323b4813/hIlFdt5bdJ.lottie"
+                            loop
+                            autoplay
+                            className="contact-lottie"
+                        />
+                    </motion.div>
+                </div>
             </div>
         </section>
     );
