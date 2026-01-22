@@ -1,5 +1,5 @@
 import { motion } from 'framer-motion';
-import { Heart, Github, Linkedin, Mail, ArrowUp } from 'lucide-react';
+import { FaHeart, FaGithub, FaLinkedin, FaEnvelope, FaArrowUp } from 'react-icons/fa';
 import { duration, easing } from '../utils/motionConfig';
 import './Footer.css';
 
@@ -9,9 +9,9 @@ const Footer = () => {
     };
 
     const socialLinks = [
-        { icon: <Github size={20} />, href: 'https://github.com/siddharthg-7', label: 'GitHub' },
-        { icon: <Linkedin size={20} />, href: 'https://linkedin.com/in/gilakathi-siddhartha-goud-a51ba3325', label: 'LinkedIn' },
-        { icon: <Mail size={20} />, href: 'mailto:siddharthgoudgilakathi@gmail.com', label: 'Email' },
+        { icon: <FaGithub size={20} />, href: 'https://github.com/siddharthg-7', label: 'GitHub' },
+        { icon: <FaLinkedin size={20} />, href: 'https://linkedin.com/in/gilakathi-siddhartha-goud-a51ba3325', label: 'LinkedIn' },
+        { icon: <FaEnvelope size={20} />, href: 'mailto:siddharthgoudgilakathi@gmail.com', label: 'Email' },
     ];
 
     // Heart beat animation
@@ -84,7 +84,7 @@ const Footer = () => {
                         initial="initial"
                         animate="animate"
                     >
-                        <Heart size={16} fill="currentColor" />
+                        <FaHeart size={16} fill="currentColor" />
                     </motion.span>{' '}
                     by <span className="footer-name">Gilakathi Siddhartha Goud</span>
                 </motion.p>
@@ -116,7 +116,7 @@ const Footer = () => {
                     whileTap={{ scale: 0.9 }}
                     aria-label="Scroll to top"
                 >
-                    <ArrowUp size={20} />
+                    <FaArrowUp size={20} />
                 </motion.button>
             </div>
         </footer>

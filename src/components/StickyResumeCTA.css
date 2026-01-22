@@ -1,0 +1,61 @@
+.sticky-resume-cta {
+    position: fixed;
+    bottom: 2rem;
+    right: 2rem;
+    z-index: 999;
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    padding: 1rem 1.5rem;
+    background: linear-gradient(135deg, #00d4ff, #7b2ff7);
+    color: #fff;
+    border: none;
+    border-radius: 50px;
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    box-shadow: 0 8px 24px rgba(0, 212, 255, 0.4);
+    transition: all 0.3s ease;
+    will-change: transform;
+}
+
+.sticky-resume-cta:hover {
+    box-shadow: 0 12px 32px rgba(0, 212, 255, 0.6);
+}
+
+.sticky-resume-cta svg {
+    font-size: 1.2rem;
+}
+
+@media (max-width: 768px) {
+    .sticky-resume-cta {
+        bottom: 1.5rem;
+        right: 1.5rem;
+        padding: 0.875rem 1.25rem;
+        font-size: 0.9rem;
+    }
+
+    .sticky-resume-cta span {
+        display: none;
+    }
+
+    .sticky-resume-cta {
+        width: 56px;
+        height: 56px;
+        padding: 0;
+        justify-content: center;
+        border-radius: 50%;
+    }
+
+    .sticky-resume-cta svg {
+        font-size: 1.4rem;
+    }
+}
+
+[data-theme="light"] .sticky-resume-cta {
+    box-shadow: 0 8px 24px rgba(0, 212, 255, 0.3);
+}
+
+[data-theme="light"] .sticky-resume-cta:hover {
+    box-shadow: 0 12px 32px rgba(0, 212, 255, 0.5);
+}

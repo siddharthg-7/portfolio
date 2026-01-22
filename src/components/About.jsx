@@ -1,7 +1,7 @@
 import { motion } from 'framer-motion';
 import { useInView } from 'framer-motion';
 import { useRef, useState } from 'react';
-import { GraduationCap, Code, Lightbulb } from 'lucide-react';
+import { FaGraduationCap, FaCode, FaLightbulb } from 'react-icons/fa';
 import { duration, easing, isTouchDevice } from '../utils/motionConfig';
 import './About.css';
 
@@ -56,7 +56,7 @@ const About = () => {
 
     const aboutCards = [
         {
-            icon: <GraduationCap size={32} />,
+            icon: <FaGraduationCap size={32} />,
             title: 'Education',
             content: (
                 <>
@@ -67,7 +67,7 @@ const About = () => {
             ),
         },
         {
-            icon: <Code size={32} />,
+            icon: <FaCode size={32} />,
             title: 'Professional Summary',
             content: (
                 <p>
@@ -78,7 +78,7 @@ const About = () => {
             ),
         },
         {
-            icon: <Lightbulb size={32} />,
+            icon: <FaLightbulb size={32} />,
             title: 'Mindset',
             content: (
                 <p>

@@ -1,5 +1,5 @@
 import { motion, useScroll, useTransform } from 'framer-motion';
-import { ArrowRight, Github, Linkedin, Mail, Sparkles } from 'lucide-react';
+import { FaArrowRight, FaGithub, FaLinkedin, FaEnvelope, FaStar, FaDownload } from 'react-icons/fa';
 import {
     fadeInUp,
     slideInLeft,
@@ -106,7 +106,7 @@ const Hero = () => {
                                 ease: "easeInOut",
                             }}
                         >
-                            <Sparkles size={20} className="greeting-icon" />
+                            <FaStar size={20} className="greeting-icon" />
                             Hello, I'm
                         </motion.span>
                     </motion.div>
@@ -160,7 +160,7 @@ const Hero = () => {
                                     ease: "easeInOut",
                                 }}
                             >
-                                <ArrowRight size={20} />
+                                <FaArrowRight size={20} />
                             </motion.span>
                         </motion.button>
 
@@ -176,6 +176,21 @@ const Hero = () => {
                         >
                             Contact Me
                         </motion.button>
+
+                        <motion.a
+                            href="https://drive.google.com/uc?export=download&id=1JCw6ULtCzwvinFwQk2jTubn4Fm3Z8fhj"
+                            download="Gilakathi_Siddhartha_Goud_Resume.pdf"
+                            className="btn btn-outline"
+                            whileHover={{
+                                scale: 1.05,
+                                borderColor: "#00d4ff",
+                                transition: { duration: 0.2 },
+                            }}
+                            whileTap={tapScale}
+                        >
+                            <FaDownload size={18} />
+                            <span>Download Resume</span>
+                        </motion.a>
                     </motion.div>
 
                     {/* Social links with stagger */}
@@ -184,9 +199,9 @@ const Hero = () => {
                         variants={fadeInUp}
                     >
                         {[
-                            { icon: Github, href: "https://github.com/siddharthg-7", label: "GitHub" },
-                            { icon: Linkedin, href: "https://linkedin.com/in/gilakathi-siddhartha-goud-a51ba3325", label: "LinkedIn" },
-                            { icon: Mail, href: "mailto:siddharthgoudgilakathi@gmail.com", label: "Email" },
+                            { icon: FaGithub, href: "https://github.com/siddharthg-7", label: "GitHub" },
+                            { icon: FaLinkedin, href: "https://linkedin.com/in/gilakathi-siddhartha-goud-a51ba3325", label: "LinkedIn" },
+                            { icon: FaEnvelope, href: "mailto:siddharthgoudgilakathi@gmail.com", label: "Email" },
                         ].map((social, index) => (
                             <motion.a
                                 key={index}

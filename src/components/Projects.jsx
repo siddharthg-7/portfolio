@@ -1,6 +1,6 @@
 import { motion, useInView } from 'framer-motion';
 import { useRef, useState } from 'react';
-import { ExternalLink, Github } from 'lucide-react';
+import { FaExternalLinkAlt, FaGithub } from 'react-icons/fa';
 import {
     fadeInUp,
     staggerContainer,
@@ -30,7 +30,7 @@ const Projects = () => {
                 'Round-tracking for active trips',
             ],
             tech: ['React', 'Node.js', 'Firebase', 'Socket.io'],
-            link: null,
+            link: 'https://github.com/siddharthg-7/College-Bus-Tracking-Attendance-System',
         },
         {
             title: 'TrustLink – Secure Opportunity Verifier',
@@ -245,7 +245,7 @@ const Projects = () => {
                                     transition: { duration: duration.instant },
                                 }}
                             >
-                                <Github size={18} />
+                                <FaGithub size={18} />
                                 <span>View on GitHub</span>
                                 <motion.span
                                     animate={{
@@ -257,7 +257,7 @@ const Projects = () => {
                                         ease: "easeInOut",
                                     }}
                                 >
-                                    <ExternalLink size={16} />
+                                    <FaExternalLinkAlt size={16} />
                                 </motion.span>
                             </motion.a>
                         )}

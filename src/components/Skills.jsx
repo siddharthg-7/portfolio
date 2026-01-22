@@ -9,27 +9,53 @@ const Skills = () => {
     const skillCategories = [
         {
             title: 'Core Areas',
-            skills: ['Software Development', 'Full-Stack Web Development', 'Applied AI Concepts'],
+            skills: [
+                { name: 'Software Development', level: 'Advanced' },
+                { name: 'Full-Stack Web Development', level: 'Advanced' },
+                { name: 'Applied AI Concepts', level: 'Intermediate' }
+            ],
         },
         {
             title: 'Programming & Tech',
-            skills: ['Python', 'C', 'JavaScript'],
+            skills: [
+                { name: 'Python', level: 'Advanced' },
+                { name: 'C', level: 'Intermediate' },
+                { name: 'JavaScript', level: 'Advanced' }
+            ],
         },
         {
             title: 'Backend & Data',
-            skills: ['Database Management (SQL)', 'API Development & Integration', 'Automation & Scripting'],
+            skills: [
+                { name: 'Database Management (SQL)', level: 'Intermediate' },
+                { name: 'API Development & Integration', level: 'Advanced' },
+                { name: 'Automation & Scripting', level: 'Advanced' }
+            ],
         },
         {
             title: 'Foundations',
-            skills: ['Data Structures & Algorithms', 'Problem Solving', 'Data Analysis & Visualization'],
+            skills: [
+                { name: 'Data Structures & Algorithms', level: 'Intermediate' },
+                { name: 'Problem Solving', level: 'Advanced' },
+                { name: 'Data Analysis & Visualization', level: 'Intermediate' }
+            ],
         },
         {
             title: 'Communication & Leadership',
-            skills: ['Public Speaking', 'Community Learning', 'Startup Initiatives', 'Team Collaboration'],
+            skills: [
+                { name: 'Public Speaking', level: 'Advanced' },
+                { name: 'Community Learning', level: 'Advanced' },
+                { name: 'Startup Initiatives', level: 'Intermediate' },
+                { name: 'Team Collaboration', level: 'Advanced' }
+            ],
         },
         {
             title: 'Creative & Marketing',
-            skills: ['Digital Marketing', 'Content Creation', 'Technical Writing', 'Brand Strategy'],
+            skills: [
+                { name: 'Digital Marketing', level: 'Intermediate' },
+                { name: 'Content Creation', level: 'Advanced' },
+                { name: 'Technical Writing', level: 'Advanced' },
+                { name: 'Brand Strategy', level: 'Intermediate' }
+            ],
         },
     ];
 
@@ -96,18 +122,23 @@ const Skills = () => {
                             animate={isInView ? 'visible' : 'hidden'}
                         >
                             {category.skills.map((skill, skillIndex) => (
-                                <motion.span
+                                <motion.div
                                     key={skillIndex}
-                                    className="skill-chip"
+                                    className="skill-chip-wrapper"
                                     variants={chipVariants}
-                                    whileHover={{
-                                        scale: 1.05,
-                                        y: -2,
-                                        transition: { duration: 0.2 },
-                                    }}
                                 >
-                                    {skill}
-                                </motion.span>
+                                    <motion.span
+                                        className={`skill-chip skill-level-${skill.level.toLowerCase()}`}
+                                        whileHover={{
+                                            scale: 1.05,
+                                            y: -2,
+                                            transition: { duration: 0.2 },
+                                        }}
+                                    >
+                                        {skill.name}
+                                        <span className="skill-level-tooltip">{skill.level}</span>
+                                    </motion.span>
+                                </motion.div>
                             ))}
                         </motion.div>
                     </motion.div>

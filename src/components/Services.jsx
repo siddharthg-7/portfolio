@@ -1,6 +1,6 @@
 import { motion, useInView } from 'framer-motion';
 import { useRef, useState } from 'react';
-import { Briefcase, Users, Rocket, Award } from 'lucide-react';
+import { FaBriefcase, FaUsers, FaRocket, FaTrophy } from 'react-icons/fa';
 import { duration, easing, isTouchDevice } from '../utils/motionConfig';
 import './Services.css';
 
@@ -10,10 +10,10 @@ const Services = () => {
     const [hoveredService, setHoveredService] = useState(null);
 
     const services = [
-        { icon: <Briefcase size={24} />, text: 'Internships' },
-        { icon: <Users size={24} />, text: 'Entry-level Roles' },
-        { icon: <Rocket size={24} />, text: 'Project Collaborations' },
-        { icon: <Award size={24} />, text: 'Hackathons & Startups' },
+        { icon: <FaBriefcase size={24} />, text: 'Internships' },
+        { icon: <FaUsers size={24} />, text: 'Entry-level Roles' },
+        { icon: <FaRocket size={24} />, text: 'Project Collaborations' },
+        { icon: <FaTrophy size={24} />, text: 'Hackathons & Startups' },
     ];
 
     const containerVariants = {

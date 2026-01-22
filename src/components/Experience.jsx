@@ -1,6 +1,6 @@
 import { motion, useInView } from 'framer-motion';
 import { useRef, useState } from 'react';
-import { Calendar, CheckCircle } from 'lucide-react';
+import { FaCalendarAlt, FaCheckCircle } from 'react-icons/fa';
 import { duration, easing, isTouchDevice } from '../utils/motionConfig';
 import './Experience.css';
 
@@ -135,7 +135,7 @@ const Experience = () => {
                                     animate={{ opacity: 1, scale: 1 }}
                                     transition={{ delay: 0.3 + index * 0.1 }}
                                 >
-                                    <Calendar size={16} />
+                                    <FaCalendarAlt size={16} />
                                     <span>{exp.date}</span>
                                 </motion.div>
                             </div>
@@ -162,7 +162,7 @@ const Experience = () => {
                                                 damping: 15
                                             }}
                                         >
-                                            <CheckCircle size={16} />
+                                            <FaCheckCircle size={16} />
                                         </motion.span>
                                         {point}
                                     </motion.li>

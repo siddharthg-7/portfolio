@@ -1,6 +1,6 @@
 import { motion, useInView } from 'framer-motion';
 import { useRef, useState } from 'react';
-import { Mail, Phone, MapPin, Linkedin, Github, Send, CheckCircle, AlertCircle } from 'lucide-react';
+import { FaEnvelope, FaPhone, FaMapMarkerAlt, FaLinkedin, FaGithub, FaPaperPlane, FaCheckCircle, FaExclamationCircle } from 'react-icons/fa';
 import emailjs from '@emailjs/browser';
 import {
     fadeInUp,
@@ -31,31 +31,31 @@ const Contact = () => {
 
     const contactInfo = [
         {
-            icon: <Mail size={24} />,
+            icon: <FaEnvelope size={24} />,
             label: 'Email',
             value: 'siddharthgoudgilakathi@gmail.com',
             link: 'mailto:siddharthgoudgilakathi@gmail.com',
         },
         {
-            icon: <Phone size={24} />,
+            icon: <FaPhone size={24} />,
             label: 'Phone',
             value: '+91 9493217211',
             link: 'tel:+919493217211',
         },
         {
-            icon: <MapPin size={24} />,
+            icon: <FaMapMarkerAlt size={24} />,
             label: 'Location',
             value: 'Hyderabad, India',
             link: null,
         },
         {
-            icon: <Linkedin size={24} />,
+            icon: <FaLinkedin size={24} />,
             label: 'LinkedIn',
             value: 'Connect on LinkedIn',
             link: 'https://linkedin.com/in/gilakathi-siddhartha-goud-a51ba3325',
         },
         {
-            icon: <Github size={24} />,
+            icon: <FaGithub size={24} />,
             label: 'GitHub',
             value: 'View GitHub Profile',
             link: 'https://github.com/siddharthg-7',
@@ -238,7 +238,7 @@ const Contact = () => {
                         ) : (
                             <>
                                 Send Message
-                                <Send size={18} />
+                                <FaPaperPlane size={18} />
                             </>
                         )}
                     </motion.button>
@@ -251,7 +251,7 @@ const Contact = () => {
                             animate={{ opacity: 1, y: 0 }}
                             exit={{ opacity: 0 }}
                         >
-                            <CheckCircle size={20} />
+                            <FaCheckCircle size={20} />
                             <span>Message sent successfully! I'll get back to you soon.</span>
                         </motion.div>
                     )}
@@ -264,7 +264,7 @@ const Contact = () => {
                             animate={{ opacity: 1, y: 0 }}
                             exit={{ opacity: 0 }}
                         >
-                            <AlertCircle size={20} />
+                            <FaExclamationCircle size={20} />
                             <span>Failed to send message. Please try again or email me directly.</span>
                         </motion.div>
                     )}

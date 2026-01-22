@@ -1,0 +1,138 @@
+.cyberpunk-loader-container {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100vh;
+    background: #0a0e27;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 2rem;
+    z-index: 10000;
+}
+
+.cyberpunk-loader {
+    position: relative;
+    width: 160px;
+    height: 160px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.loader-ring {
+    position: absolute;
+    border-radius: 50%;
+    border: 3px solid transparent;
+}
+
+.loader-ring-outer {
+    width: 160px;
+    height: 160px;
+    border-top-color: #00f0ff;
+    border-right-color: #00f0ff;
+    filter: drop-shadow(0 0 20px rgba(0, 240, 255, 0.6));
+}
+
+.loader-ring-middle {
+    width: 120px;
+    height: 120px;
+    border-top-color: #bd00ff;
+    border-left-color: #bd00ff;
+    filter: drop-shadow(0 0 15px rgba(189, 0, 255, 0.6));
+}
+
+.loader-ring-inner {
+    width: 80px;
+    height: 80px;
+    border-top-color: #0066ff;
+    border-right-color: #0066ff;
+    filter: drop-shadow(0 0 10px rgba(0, 102, 255, 0.6));
+}
+
+.loader-core {
+    position: absolute;
+    width: 40px;
+    height: 40px;
+    background: radial-gradient(circle, #00f0ff 0%, transparent 70%);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.loader-pulse {
+    width: 20px;
+    height: 20px;
+    background: #00f0ff;
+    border-radius: 50%;
+    box-shadow:
+        0 0 20px rgba(0, 240, 255, 0.8),
+        0 0 40px rgba(0, 240, 255, 0.6),
+        0 0 60px rgba(0, 240, 255, 0.4);
+    animation: pulse 2s ease-in-out infinite;
+}
+
+@keyframes pulse {
+
+    0%,
+    100% {
+        transform: scale(1);
+        opacity: 1;
+    }
+
+    50% {
+        transform: scale(1.5);
+        opacity: 0.5;
+    }
+}
+
+.loader-text {
+    font-family: 'Orbitron', sans-serif;
+    font-size: 1.25rem;
+    font-weight: 600;
+    color: #00f0ff;
+    text-transform: uppercase;
+    letter-spacing: 0.2em;
+    text-shadow:
+        0 0 10px rgba(0, 240, 255, 0.8),
+        0 0 20px rgba(0, 240, 255, 0.6);
+}
+
+@media (max-width: 640px) {
+    .cyberpunk-loader {
+        width: 120px;
+        height: 120px;
+    }
+
+    .loader-ring-outer {
+        width: 120px;
+        height: 120px;
+    }
+
+    .loader-ring-middle {
+        width: 90px;
+        height: 90px;
+    }
+
+    .loader-ring-inner {
+        width: 60px;
+        height: 60px;
+    }
+
+    .loader-core {
+        width: 30px;
+        height: 30px;
+    }
+
+    .loader-pulse {
+        width: 15px;
+        height: 15px;
+    }
+
+    .loader-text {
+        font-size: 1rem;
+    }
+}
