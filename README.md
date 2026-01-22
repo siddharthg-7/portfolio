@@ -47,7 +47,7 @@ I am a passionate **Full-Stack Developer** dedicated to building scalable web ap
 
 | Project | Description | Tech Stack |
 | :--- | :--- | :--- |
-| **[Modern Portfolio](https://siddharthgoudgilakathi.vercel.app/)** | Professional portfolio showcasing my journey and skills. | Next.js, Framer Motion, Tailwind |
+| **[Modern Portfolio](https://siddharthgoudgilakathi-siddharthexam21-7780s-projects.vercel.app/)** | Professional portfolio showcasing my journey and skills. | Next.js, Framer Motion, Tailwind |
 | **[AI Web App]** | A description of your best AI-related project here. | Python, OpenAI, React |
 | **[E-Commerce Platform]** | Full-stack solution with payment integration. | Node.js, Stripe, MongoDB |
 
