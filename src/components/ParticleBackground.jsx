@@ -1,6 +1,40 @@
 import { useEffect, useRef } from 'react';
 import './ParticleBackground.css';
 
+class Particle {
+    constructor(canvas, options, x, y) {
+        this.canvas = canvas;
+        this.options = options;
+        this.x = x || Math.random() * canvas.width;
+        this.y = y || Math.random() * canvas.height;
+        this.radius = Math.random() * 1.5 + 1;
+        this.color = options.particleColors[Math.floor(Math.random() * options.particleColors.length)];
+        this.opacity = 0;
+        this.velocity = {
+            x: (Math.random() - 0.5) * options.velocity,
+            y: (Math.random() - 0.5) * options.velocity
+        };
+    }
+
+    update() {
+        if (this.opacity < 1) this.opacity += 0.02;
+
+        if (this.x > this.canvas.width + 100 || this.x < -100) this.velocity.x = -this.velocity.x;
+        if (this.y > this.canvas.height + 100 || this.y < -100) this.velocity.y = -this.velocity.y;
+
+        this.x += this.velocity.x;
+        this.y += this.velocity.y;
+    }
+
+    draw(ctx) {
+        ctx.beginPath();
+        ctx.fillStyle = this.color;
+        ctx.globalAlpha = this.opacity * 0.6;
+        ctx.arc(this.x, this.y, this.radius, 0, 2 * Math.PI);
+        ctx.fill();
+    }
+}
+
 export default function ParticleBackground() {
     const canvasRef = useRef(null);
     const containerRef = useRef(null);
@@ -26,42 +60,11 @@ export default function ParticleBackground() {
         };
 
         const resizeCanvas = () => {
+            if (!container) return;
             canvas.width = container.offsetWidth;
             canvas.height = container.offsetHeight;
             createParticles(false);
         };
-
-        class Particle {
-            constructor(x, y) {
-                this.x = x || Math.random() * canvas.width;
-                this.y = y || Math.random() * canvas.height;
-                this.radius = Math.random() * 1.5 + 1;
-                this.color = options.particleColors[Math.floor(Math.random() * options.particleColors.length)];
-                this.opacity = 0;
-                this.velocity = {
-                    x: (Math.random() - 0.5) * options.velocity,
-                    y: (Math.random() - 0.5) * options.velocity
-                };
-            }
-
-            update() {
-                if (this.opacity < 1) this.opacity += 0.02;
-
-                if (this.x > canvas.width + 100 || this.x < -100) this.velocity.x = -this.velocity.x;
-                if (this.y > canvas.height + 100 || this.y < -100) this.velocity.y = -this.velocity.y;
-
-                this.x += this.velocity.x;
-                this.y += this.velocity.y;
-            }
-
-            draw() {
-                ctx.beginPath();
-                ctx.fillStyle = this.color;
-                ctx.globalAlpha = this.opacity * 0.6;
-                ctx.arc(this.x, this.y, this.radius, 0, 2 * Math.PI);
-                ctx.fill();
-            }
-        }
 
         const createParticles = (isInitial) => {
             particles = [];
@@ -72,7 +75,7 @@ export default function ParticleBackground() {
                 if (createIntervalId) clearInterval(createIntervalId);
                 createIntervalId = setInterval(() => {
                     if (counter < quantity - 1) {
-                        particles.push(new Particle());
+                        particles.push(new Particle(canvas, options));
                     } else {
                         clearInterval(createIntervalId);
                     }
@@ -80,7 +83,7 @@ export default function ParticleBackground() {
                 }, 100);
             } else {
                 for (let i = 0; i < quantity; i++) {
-                    particles.push(new Particle());
+                    particles.push(new Particle(canvas, options));
                 }
             }
         };
@@ -117,7 +120,7 @@ export default function ParticleBackground() {
             // Update and draw particles
             particles.forEach(p => {
                 p.update();
-                p.draw();
+                p.draw(ctx);
             });
 
             animationFrameId = requestAnimationFrame(update);
@@ -127,7 +130,7 @@ export default function ParticleBackground() {
         const handleMouseMove = (e) => {
             const rect = canvas.getBoundingClientRect();
             if (!interactionParticle) {
-                interactionParticle = new Particle(e.clientX - rect.left, e.clientY - rect.top);
+                interactionParticle = new Particle(canvas, options, e.clientX - rect.left, e.clientY - rect.top);
                 interactionParticle.velocity = { x: 0, y: 0 };
                 interactionParticle.opacity = 1;
                 particles.push(interactionParticle);
@@ -142,7 +145,7 @@ export default function ParticleBackground() {
             const interval = setInterval(() => {
                 if (mouseIsDown && interactionParticle) {
                     for (let i = 0; i < 2; i++) {
-                        particles.push(new Particle(interactionParticle.x, interactionParticle.y));
+                        particles.push(new Particle(canvas, options, interactionParticle.x, interactionParticle.y));
                     }
                 } else {
                     clearInterval(interval);
@@ -166,7 +169,7 @@ export default function ParticleBackground() {
                 const rect = canvas.getBoundingClientRect();
                 const touch = e.touches[0];
                 if (!interactionParticle) {
-                    interactionParticle = new Particle(touch.clientX - rect.left, touch.clientY - rect.top);
+                    interactionParticle = new Particle(canvas, options, touch.clientX - rect.left, touch.clientY - rect.top);
                     interactionParticle.velocity = { x: 0, y: 0 };
                     interactionParticle.opacity = 1;
                     particles.push(interactionParticle);

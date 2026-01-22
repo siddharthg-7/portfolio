@@ -20,7 +20,8 @@ const ProgressIndicator = () => {
             const windowHeight = window.innerHeight;
             const documentHeight = document.documentElement.scrollHeight;
             const scrollTop = window.scrollY;
-            const progress = (scrollTop / (documentHeight - windowHeight)) * 100;
+            const denominator = documentHeight - windowHeight;
+            const progress = denominator > 0 ? (scrollTop / denominator) * 100 : 0;
             setScrollProgress(progress);
 
             const sectionElements = sections.map(section => ({
