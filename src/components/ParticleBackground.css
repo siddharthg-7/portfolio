@@ -17,11 +17,11 @@
     left: 0;
     width: 100%;
     height: 100%;
-    background-image: url('https://img.freepik.com/free-vector/watercolor-galaxy-background_79603-2384.jpg?semt=ais_user_personalization&w=740&q=80');
+    background-image: url('https://wallpapers.com/images/hd/black-solid-background-2920-x-1642-375caij8pxe5zz8e.jpg');
     background-position: center;
     background-size: cover;
-    opacity: 0.2;
-    filter: saturate(0.5) brightness(0.8);
+    opacity: 0.35;
+    filter: saturate(1.2) brightness(0.9);
 }
 
 .particle-canvas {
