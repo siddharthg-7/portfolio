@@ -265,7 +265,7 @@ const Hero = () => {
                             }}
                         >
                             <img
-                                src="https://i.postimg.cc/1XLdTkBw/Gilakathi-Siddhartha-Goud.jpg"
+                                src="https://iili.io/fbwAUFt.jpg"
                                 alt="Gilakathi Siddhartha Goud"
                                 loading="eager"
                             />
