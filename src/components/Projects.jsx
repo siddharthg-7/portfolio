@@ -8,6 +8,7 @@ import {
     isTouchDevice,
     isMobileDevice,
 } from '../utils/motionConfig';
+import MorphingCard from './MorphingCard';
 import './Projects.css';
 
 // Import project images
@@ -151,20 +152,12 @@ const Projects = () => {
                 style={{ y: parallaxY }}
             >
                 {projects.map((project, index) => (
-                    <motion.div
+                    <MorphingCard
                         key={index}
-                        className="card project-card"
-                        variants={cardVariants}
-                        whileHover={{
-                            y: -12,
-                            transition: {
-                                duration: duration.fast,
-                                ease: easing.emphasis,
-                            },
-                        }}
-                        whileTap={tapScale}
-                        onHoverStart={() => setHoveredCard(index)}
-                        onHoverEnd={() => setHoveredCard(null)}
+                        className="project-card"
+                        delay={index * 0.15}
+                        onMouseEnter={() => setHoveredCard(index)}
+                        onMouseLeave={() => setHoveredCard(null)}
                     >
                         {/* Project Image */}
                         <div className="project-image-container">
@@ -278,7 +271,7 @@ const Projects = () => {
                                 </motion.span>
                             </motion.a>
                         )}
-                    </motion.div>
+                    </MorphingCard>
                 ))}
             </motion.div>
         </section>

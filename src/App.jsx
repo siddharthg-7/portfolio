@@ -13,6 +13,7 @@ import CyberpunkLoader from './components/CyberpunkLoader';
 import ProgressIndicator from './components/ProgressIndicator';
 import ParticleBackground from './components/ParticleBackground';
 import ScanlineOverlay from './components/ScanlineOverlay';
+import CustomCursor from './components/CustomCursor';
 import './App.css';
 
 function App() {
@@ -33,6 +34,7 @@ function App() {
           animate={{ opacity: 1 }}
           transition={{ duration: 0.5 }}
         >
+          <CustomCursor />
           <ScanlineOverlay />
           <ParticleBackground />
           <ProgressIndicator />

@@ -12,6 +12,7 @@ import {
     scrollReveal,
     isMobileDevice,
 } from '../utils/motionConfig';
+import MagneticButton from './MagneticButton';
 import './Hero.css';
 
 const Hero = () => {
@@ -140,16 +141,15 @@ const Hero = () => {
                         I focus on clean code, problem-solving, and building scalable systems that make a real-world impact.
                     </motion.p>
 
-                    {/* CTA Buttons with enhanced hover */}
+                    {/* CTA Buttons with magnetic effects */}
                     <motion.div
                         className="hero-cta"
                         variants={fadeInUp}
                     >
-                        <motion.button
+                        <MagneticButton
                             className="btn btn-primary"
                             onClick={() => handleScroll('#projects')}
-                            whileHover={hoverScale}
-                            whileTap={tapScale}
+                            strength={0.3}
                         >
                             <span>View Projects</span>
                             <motion.span
@@ -162,35 +162,25 @@ const Hero = () => {
                             >
                                 <FaArrowRight size={20} />
                             </motion.span>
-                        </motion.button>
+                        </MagneticButton>
 
-                        <motion.button
+                        <MagneticButton
                             className="btn btn-secondary"
                             onClick={() => handleScroll('#contact')}
-                            whileHover={{
-                                scale: 1.05,
-                                backgroundColor: "rgba(0, 212, 255, 0.15)",
-                                transition: { duration: 0.2 },
-                            }}
-                            whileTap={tapScale}
+                            strength={0.3}
                         >
                             Contact Me
-                        </motion.button>
+                        </MagneticButton>
 
-                        <motion.a
+                        <MagneticButton
                             href="https://drive.google.com/uc?export=download&id=1JCw6ULtCzwvinFwQk2jTubn4Fm3Z8fhj"
                             download="Gilakathi_Siddhartha_Goud_Resume.pdf"
                             className="btn btn-outline"
-                            whileHover={{
-                                scale: 1.05,
-                                borderColor: "#00d4ff",
-                                transition: { duration: 0.2 },
-                            }}
-                            whileTap={tapScale}
+                            strength={0.3}
                         >
                             <FaDownload size={18} />
                             <span>Download Resume</span>
-                        </motion.a>
+                        </MagneticButton>
                     </motion.div>
 
                     {/* Social links with stagger */}
