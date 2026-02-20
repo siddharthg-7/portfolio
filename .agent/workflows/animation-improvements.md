@@ -2,7 +2,6 @@
 description: Portfolio Animation Enhancement Recommendations
 ---
 
-# Portfolio Animation Improvements
 
 ## Summary of Current State
 
