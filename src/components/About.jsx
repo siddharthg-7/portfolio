@@ -1,67 +1,32 @@
+import { useEffect, useRef } from 'react';
 import { motion, useScroll, useTransform } from 'framer-motion';
 import { useInView } from 'framer-motion';
-import { useRef, useState } from 'react';
 import { FaGraduationCap, FaCode, FaLightbulb } from 'react-icons/fa';
-import { duration, easing, isTouchDevice, isMobileDevice } from '../utils/motionConfig';
+import { isMobileDevice } from '../utils/motionConfig';
+import { animateAboutCards } from '../utils/animeAnimations';
 import './About.css';
 
 const About = () => {
     const ref = useRef(null);
     const isInView = useInView(ref, { once: true, margin: '-100px' });
-    const [hoveredCard, setHoveredCard] = useState(null);
+    const cardsAnimated = useRef(false);
 
-    // Parallax effect
     const { scrollYProgress } = useScroll({
         target: ref,
-        offset: ["start end", "end start"]
+        offset: ['start end', 'end start'],
     });
 
-    // Subtle movement (20px up on scroll)
     const parallaxY = useTransform(scrollYProgress, [0, 1], isMobileDevice() ? [0, 0] : [20, -20]);
 
-    const containerVariants = {
-        hidden: { opacity: 0 },
-        visible: {
-            opacity: 1,
-            transition: {
-                staggerChildren: 0.2,
-            },
-        },
-    };
-
-    const cardVariants = {
-        hidden: { opacity: 0, y: 50 },
-        visible: {
-            opacity: 1,
-            y: 0,
-            transition: { duration: duration.slow, ease: easing.enter },
-        },
-    };
-
-    // Icon animation variants
-    const iconVariants = {
-        initial: { scale: 1, rotate: 0 },
-        hover: {
-            scale: 1.15,
-            rotate: [0, -10, 10, -10, 0],
-            transition: {
-                duration: 0.5,
-                ease: easing.emphasis,
-            },
-        },
-    };
-
-    // Content stagger for card internals
-    const contentVariants = {
-        hidden: { opacity: 0 },
-        visible: {
-            opacity: 1,
-            transition: {
-                staggerChildren: 0.1,
-                delayChildren: 0.2,
-            },
-        },
-    };
+    // Anime.js stagger entrance for cards
+    useEffect(() => {
+        if (isInView && !cardsAnimated.current) {
+            cardsAnimated.current = true;
+            setTimeout(() => {
+                animateAboutCards('.about-card');
+            }, 80);
+        }
+    }, [isInView]);
 
     const aboutCards = [
         {
@@ -106,7 +71,7 @@ const About = () => {
                 className="section-header"
                 initial={{ opacity: 0, y: 30 }}
                 animate={isInView ? { opacity: 1, y: 0 } : {}}
-                transition={{ duration: duration.slow }}
+                transition={{ duration: 0.6 }}
             >
                 <h2 className="section-title">About Me</h2>
                 <p className="section-subtitle">
@@ -117,48 +82,22 @@ const About = () => {
 
             <motion.div
                 className="about-grid"
-                variants={containerVariants}
-                initial="hidden"
-                animate={isInView ? 'visible' : 'hidden'}
                 style={{ y: parallaxY }}
             >
                 {aboutCards.map((card, index) => (
-                    <motion.div
+                    <div
                         key={index}
                         className="card about-card"
-                        variants={cardVariants}
-                        whileHover={{
-                            y: -10,
-                            scale: 1.02,
-                            transition: { duration: duration.fast }
-                        }}
-                        onHoverStart={() => setHoveredCard(index)}
-                        onHoverEnd={() => setHoveredCard(null)}
+                        style={{ opacity: 0 }}
                     >
-                        <motion.div
-                            className="about-card-icon"
-                            variants={iconVariants}
-                            initial="initial"
-                            animate={hoveredCard === index && !isTouchDevice() ? "hover" : "initial"}
-                        >
+                        <div className="about-card-icon">
                             {card.icon}
-                        </motion.div>
-                        <motion.h3
-                            initial={{ opacity: 0 }}
-                            animate={{ opacity: 1 }}
-                            transition={{ delay: 0.3 + index * 0.1 }}
-                        >
-                            {card.title}
-                        </motion.h3>
-                        <motion.div
-                            className="about-card-content"
-                            variants={contentVariants}
-                            initial="hidden"
-                            animate={isInView ? "visible" : "hidden"}
-                        >
+                        </div>
+                        <h3>{card.title}</h3>
+                        <div className="about-card-content">
                             {card.content}
-                        </motion.div>
-                    </motion.div>
+                        </div>
+                    </div>
                 ))}
             </motion.div>
         </section>

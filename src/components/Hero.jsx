@@ -1,22 +1,23 @@
+import { useEffect, useRef } from 'react';
 import { motion, useScroll, useTransform } from 'framer-motion';
 import { FaArrowRight, FaGithub, FaLinkedin, FaEnvelope, FaStar, FaDownload } from 'react-icons/fa';
-import {
-    fadeInUp,
-    slideInLeft,
-    slideInRight,
-    staggerContainer,
-    duration,
-    easing,
-    hoverScale,
-    tapScale,
-    scrollReveal,
-    isMobileDevice,
-} from '../utils/motionConfig';
+import { isMobileDevice } from '../utils/motionConfig';
 import MagneticButton from './MagneticButton';
+import {
+    animateHeroEntrance,
+    animateHeroFloat,
+    animateHeroRing,
+    animateOrbs,
+    animateCTAArrow,
+    animateScrollIndicator,
+} from '../utils/animeAnimations';
 import './Hero.css';
 
 const Hero = () => {
-    // Parallax effect on scroll (disabled on mobile for performance)
+    const heroRef = useRef(null);
+    const floatRef = useRef(null);
+    const ringRef = useRef(null);
+
     const { scrollY } = useScroll();
     const y = useTransform(scrollY, [0, 500], isMobileDevice() ? [0, 0] : [0, 150]);
     const opacity = useTransform(scrollY, [0, 300], [1, 0]);
@@ -28,140 +29,82 @@ const Hero = () => {
         }
     };
 
-    // Floating animation for profile picture
-    const floatingAnimation = {
-        y: [0, -10, 0],
-        transition: {
-            duration: 3,
-            repeat: Infinity,
-            ease: "easeInOut",
-        },
-    };
+    useEffect(() => {
+        // ── Hero text entrance (Anime.js timeline) ────────────────────────────
+        const tl = animateHeroEntrance('.hero-text');
 
-    // Gradient animation
-    const gradientAnimation = {
-        backgroundPosition: ['0% 50%', '100% 50%', '0% 50%'],
-        transition: {
-            duration: 8,
-            repeat: Infinity,
-            ease: "linear",
-        },
-    };
+        // ── Profile image float (Anime.js loop) ──────────────────────────────
+        let floatAnim, ringAnim;
+        if (floatRef.current) {
+            floatAnim = animateHeroFloat('.hero-image');
+        }
+        if (ringRef.current) {
+            ringAnim = animateHeroRing('.hero-image-ring');
+        }
+
+        // ── Background orbs (Anime.js) ────────────────────────────────────────
+        animateOrbs('.hero-orb');
+
+        // ── CTA button arrow bounce ───────────────────────────────────────────
+        animateCTAArrow('.cta-arrow');
+
+        // ── Scroll indicator ──────────────────────────────────────────────────
+        animateScrollIndicator('.scroll-indicator-line');
+
+        return () => {
+            tl?.pause?.();
+            floatAnim?.pause?.();
+            ringAnim?.pause?.();
+        };
+    }, []);
 
     return (
-        <section id="home" className="hero">
+        <section id="home" className="hero" ref={heroRef}>
             {/* Animated grid background */}
-            <motion.div
-                className="hero-grid"
-                style={{ opacity }}
-            />
+            <motion.div className="hero-grid" style={{ opacity }} />
 
-            {/* Animated gradient orbs */}
-            <motion.div
-                className="hero-orb hero-orb-1"
-                animate={{
-                    x: [0, 30, 0],
-                    y: [0, -30, 0],
-                    scale: [1, 1.1, 1],
-                }}
-                transition={{
-                    duration: 8,
-                    repeat: Infinity,
-                    ease: "easeInOut",
-                }}
-            />
-            <motion.div
-                className="hero-orb hero-orb-2"
-                animate={{
-                    x: [0, -30, 0],
-                    y: [0, 30, 0],
-                    scale: [1, 1.2, 1],
-                }}
-                transition={{
-                    duration: 10,
-                    repeat: Infinity,
-                    ease: "easeInOut",
-                }}
-            />
+            {/* Floating gradient orbs – animated by Anime.js */}
+            <div className="hero-orb hero-orb-1" />
+            <div className="hero-orb hero-orb-2" />
 
-            <motion.div
-                className="hero-content"
-                variants={staggerContainer}
-                initial="initial"
-                animate="animate"
-            >
+            <div className="hero-content">
                 <div className="hero-text">
-                    {/* Greeting with icon */}
-                    <motion.div
-                        className="hero-greeting-wrapper"
-                        variants={slideInLeft}
-                    >
-                        <motion.span
-                            className="hero-greeting"
-                            animate={{
-                                opacity: [0.7, 1, 0.7],
-                            }}
-                            transition={{
-                                duration: 2,
-                                repeat: Infinity,
-                                ease: "easeInOut",
-                            }}
-                        >
+                    {/* Greeting */}
+                    <div className="hero-greeting-wrapper" style={{ opacity: 0 }}>
+                        <span className="hero-greeting">
                             <FaStar size={20} className="greeting-icon" />
                             Hello, I'm
-                        </motion.span>
-                    </motion.div>
+                        </span>
+                    </div>
 
-                    {/* Name with gradient animation */}
-                    <motion.h1
-                        className="hero-title"
-                        variants={fadeInUp}
-                    >
-                        <motion.span
-                            className="hero-title-gradient"
-                            animate={gradientAnimation}
-                        >
+                    {/* Name */}
+                    <h1 className="hero-title" style={{ opacity: 0 }}>
+                        <span className="hero-title-gradient">
                             Gilakathi Siddhartha Goud
-                        </motion.span>
-                    </motion.h1>
+                        </span>
+                    </h1>
 
-                    {/* Tagline with typing effect */}
-                    <motion.p
-                        className="hero-tagline"
-                        variants={fadeInUp}
-                    >
+                    {/* Tagline */}
+                    <p className="hero-tagline" style={{ opacity: 0 }}>
                         Second-year B.Tech IT student building scalable full-stack and AI-powered systems.
-                    </motion.p>
+                    </p>
 
-                    <motion.p
-                        className="hero-description"
-                        variants={fadeInUp}
-                    >
+                    <p className="hero-description" style={{ opacity: 0 }}>
                         Passionate about software development, full-stack web applications, and data-driven AI projects.
                         I focus on clean code, problem-solving, and building scalable systems that make a real-world impact.
-                    </motion.p>
+                    </p>
 
-                    {/* CTA Buttons with magnetic effects */}
-                    <motion.div
-                        className="hero-cta"
-                        variants={fadeInUp}
-                    >
+                    {/* CTA Buttons */}
+                    <div className="hero-cta" style={{ opacity: 0 }}>
                         <MagneticButton
                             className="btn btn-primary"
                             onClick={() => handleScroll('#projects')}
                             strength={0.3}
                         >
                             <span>View Projects</span>
-                            <motion.span
-                                animate={{ x: [0, 5, 0] }}
-                                transition={{
-                                    duration: 1.5,
-                                    repeat: Infinity,
-                                    ease: "easeInOut",
-                                }}
-                            >
+                            <span className="cta-arrow">
                                 <FaArrowRight size={20} />
-                            </motion.span>
+                            </span>
                         </MagneticButton>
 
                         <MagneticButton
@@ -181,118 +124,57 @@ const Hero = () => {
                             <FaDownload size={18} />
                             <span>Download Resume</span>
                         </MagneticButton>
-                    </motion.div>
+                    </div>
 
-                    {/* Social links with stagger */}
-                    <motion.div
-                        className="hero-social"
-                        variants={fadeInUp}
-                    >
+                    {/* Social Links */}
+                    <div className="hero-social" style={{ opacity: 0 }}>
                         {[
                             { icon: FaGithub, href: "https://github.com/siddharthg-7", label: "GitHub" },
                             { icon: FaLinkedin, href: "https://linkedin.com/in/gilakathi-siddhartha-goud-a51ba3325", label: "LinkedIn" },
                             { icon: FaEnvelope, href: "mailto:siddharthgoudgilakathi@gmail.com", label: "Email" },
                         ].map((social, index) => (
-                            <motion.a
+                            <a
                                 key={index}
                                 href={social.href}
                                 target={social.href.startsWith('http') ? '_blank' : undefined}
                                 rel="noopener noreferrer"
                                 aria-label={social.label}
-                                whileHover={{
-                                    y: -4,
-                                    scale: 1.1,
-                                    backgroundColor: "rgba(0, 212, 255, 0.2)",
-                                    transition: { duration: 0.2 },
-                                }}
-                                whileTap={{ scale: 0.95 }}
-                                initial={{ opacity: 0, y: 20 }}
-                                animate={{ opacity: 1, y: 0 }}
-                                transition={{
-                                    delay: 1 + index * 0.1,
-                                    duration: duration.base,
-                                    ease: easing.enter,
-                                }}
+                                className="social-icon-link"
                             >
                                 <social.icon size={24} />
-                            </motion.a>
+                            </a>
                         ))}
-                    </motion.div>
+                    </div>
                 </div>
 
-                {/* Enhanced profile image with parallax */}
+                {/* Profile image with parallax + Anime.js float */}
                 <motion.div
                     className="hero-image-container"
-                    variants={slideInRight}
                     style={{ y }}
                 >
                     <div className="hero-image-wrapper">
-                        {/* Animated glow */}
-                        <motion.div
-                            className="hero-image-glow"
-                            animate={{
-                                scale: [1, 1.15, 1],
-                                opacity: [0.3, 0.6, 0.3],
-                                rotate: [0, 180, 360],
-                            }}
-                            transition={{
-                                duration: 8,
-                                repeat: Infinity,
-                                ease: "easeInOut",
-                            }}
-                        />
+                        {/* Glow */}
+                        <div className="hero-image-glow" />
 
-                        {/* Rotating ring */}
-                        <motion.div
-                            className="hero-image-ring"
-                            animate={{
-                                rotate: 360,
-                            }}
-                            transition={{
-                                duration: 20,
-                                repeat: Infinity,
-                                ease: "linear",
-                            }}
-                        />
+                        {/* Rotating ring — driven by Anime.js */}
+                        <div className="hero-image-ring" ref={ringRef} />
 
-                        {/* Profile image with floating effect */}
-                        <motion.div
-                            className="hero-image"
-                            animate={floatingAnimation}
-                            whileHover={{
-                                scale: 1.05,
-                                transition: { duration: 0.3 },
-                            }}
-                        >
+                        {/* Profile image — floating driven by Anime.js */}
+                        <div className="hero-image" ref={floatRef}>
                             <img
                                 src="/GilakathiSiddharthaGoud.jpg"
                                 alt="Gilakathi Siddhartha Goud"
                                 loading="eager"
                             />
-                        </motion.div>
+                        </div>
                     </div>
                 </motion.div>
-            </motion.div>
+            </div>
 
             {/* Scroll indicator */}
-            <motion.div
-                className="scroll-indicator"
-                initial={{ opacity: 0, y: -10 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 2, duration: 1 }}
-            >
-                <motion.div
-                    className="scroll-indicator-line"
-                    animate={{
-                        height: ['0%', '100%', '0%'],
-                    }}
-                    transition={{
-                        duration: 2,
-                        repeat: Infinity,
-                        ease: "easeInOut",
-                    }}
-                />
-            </motion.div>
+            <div className="scroll-indicator">
+                <div className="scroll-indicator-line" />
+            </div>
         </section>
     );
 };

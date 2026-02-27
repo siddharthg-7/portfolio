@@ -1,45 +1,44 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { motion } from 'framer-motion';
 import { Menu, X } from 'lucide-react';
+import { animateNavbarEntrance, animateNavLinks } from '../utils/animeAnimations';
 import './Navbar.css';
 
 const Navbar = () => {
     const [scrolled, setScrolled] = useState(false);
     const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
     const [activeSection, setActiveSection] = useState('home');
+    const navRef = useRef(null);
+    const mounted = useRef(false);
+
+    // Anime.js navbar entrance on mount
+    useEffect(() => {
+        if (!mounted.current) {
+            mounted.current = true;
+            animateNavbarEntrance('.navbar');
+            setTimeout(() => animateNavLinks('.desktop-nav li'), 200);
+        }
+    }, []);
 
     useEffect(() => {
-        const handleScroll = () => {
-            setScrolled(window.scrollY > 50);
-        };
-
+        const handleScroll = () => setScrolled(window.scrollY > 50);
         window.addEventListener('scroll', handleScroll);
         return () => window.removeEventListener('scroll', handleScroll);
     }, []);
 
-    // Track active section based on scroll position
+    // Track active section
     useEffect(() => {
         const sections = document.querySelectorAll('section[id]');
-
         const observer = new IntersectionObserver(
             (entries) => {
                 entries.forEach((entry) => {
-                    if (entry.isIntersecting) {
-                        setActiveSection(entry.target.id);
-                    }
+                    if (entry.isIntersecting) setActiveSection(entry.target.id);
                 });
             },
-            {
-                threshold: 0.3, // Trigger when 30% of section is visible
-                rootMargin: '-100px 0px -60% 0px', // Adjust trigger area
-            }
+            { threshold: 0.3, rootMargin: '-100px 0px -60% 0px' }
         );
-
-        sections.forEach((section) => observer.observe(section));
-
-        return () => {
-            sections.forEach((section) => observer.unobserve(section));
-        };
+        sections.forEach((s) => observer.observe(s));
+        return () => sections.forEach((s) => observer.unobserve(s));
     }, []);
 
     const navLinks = [
@@ -55,35 +54,23 @@ const Navbar = () => {
         e.preventDefault();
         setMobileMenuOpen(false);
         const element = document.querySelector(href);
-        if (element) {
-            element.scrollIntoView({ behavior: 'smooth' });
-        }
+        if (element) element.scrollIntoView({ behavior: 'smooth' });
     };
 
     return (
-        <motion.nav
+        <nav
+            ref={navRef}
             className={`navbar ${scrolled ? 'scrolled' : ''}`}
-            initial={{ y: -100 }}
-            animate={{ y: 0 }}
-            transition={{ duration: 0.5 }}
+            style={{ opacity: 0 }} // Anime.js will reveal it
         >
             <div className="nav-container">
-                <motion.div
-                    className="nav-logo"
-                    initial={{ opacity: 0 }}
-                    animate={{ opacity: 1 }}
-                    transition={{ delay: 0.2 }}
-                >
-                    SG
-                </motion.div>
+                <div className="nav-logo">SG</div>
 
                 <ul className="nav-links desktop-nav">
-                    {navLinks.map((link, index) => (
-                        <motion.li
+                    {navLinks.map((link) => (
+                        <li
                             key={link.name}
-                            initial={{ opacity: 0, y: -20 }}
-                            animate={{ opacity: 1, y: 0 }}
-                            transition={{ delay: 0.1 * index }}
+                            style={{ opacity: 0 }} // Anime.js stagger
                         >
                             <a
                                 href={link.href}
@@ -92,7 +79,7 @@ const Navbar = () => {
                             >
                                 {link.name}
                             </a>
-                        </motion.li>
+                        </li>
                     ))}
                 </ul>
 
@@ -105,7 +92,7 @@ const Navbar = () => {
                 </button>
             </div>
 
-            {/* Mobile Menu */}
+            {/* Mobile Menu — keep Framer Motion for collapse accordion */}
             {mobileMenuOpen && (
                 <motion.div
                     className="mobile-menu"
@@ -134,7 +121,7 @@ const Navbar = () => {
                     </ul>
                 </motion.div>
             )}
-        </motion.nav>
+        </nav>
     );
 };
 

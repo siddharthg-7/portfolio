@@ -1,17 +1,11 @@
+import { useEffect, useRef } from 'react';
 import { motion, useInView, useScroll, useTransform } from 'framer-motion';
-import { useRef, useState } from 'react';
 import { FaExternalLinkAlt, FaGithub } from 'react-icons/fa';
-import {
-    duration,
-    easing,
-    tapScale,
-    isTouchDevice,
-    isMobileDevice,
-} from '../utils/motionConfig';
+import { isMobileDevice } from '../utils/motionConfig';
+import { animateProjectCards } from '../utils/animeAnimations';
 import MorphingCard from './MorphingCard';
 import './Projects.css';
 
-// Import project images
 import busTrackerImg from '../assets/projects/bus_tracker.png';
 import trustlinkImg from '../assets/projects/trustlink.png';
 import blockchainImg from '../assets/projects/blockchain.png';
@@ -19,15 +13,22 @@ import blockchainImg from '../assets/projects/blockchain.png';
 const Projects = () => {
     const ref = useRef(null);
     const isInView = useInView(ref, { once: true, margin: '-100px' });
-    const [hoveredCard, setHoveredCard] = useState(null);
+    const cardsAnimated = useRef(false);
 
-    // Parallax effect
     const { scrollYProgress } = useScroll({
         target: ref,
-        offset: ["start end", "end start"]
+        offset: ['start end', 'end start'],
     });
-
     const parallaxY = useTransform(scrollYProgress, [0, 1], isMobileDevice() ? [0, 0] : [30, -30]);
+
+    useEffect(() => {
+        if (isInView && !cardsAnimated.current) {
+            cardsAnimated.current = true;
+            setTimeout(() => {
+                animateProjectCards('.project-card');
+            }, 100);
+        }
+    }, [isInView]);
 
     const projects = [
         {
@@ -74,69 +75,13 @@ const Projects = () => {
         },
     ];
 
-    // Stagger configuration for cards
-    const containerVariants = {
-        initial: { opacity: 0 },
-        animate: {
-            opacity: 1,
-            transition: {
-                staggerChildren: 0.15,
-                delayChildren: 0.2,
-            },
-        },
-    };
-
-    const cardVariants = {
-        initial: {
-            opacity: 0,
-            y: 60,
-            scale: 0.95,
-        },
-        animate: {
-            opacity: 1,
-            y: 0,
-            scale: 1,
-            transition: {
-                duration: duration.slow,
-                ease: easing.enter,
-            },
-        },
-    };
-
-    // Feature list stagger
-    const featureListVariants = {
-        initial: { opacity: 0 },
-        animate: {
-            opacity: 1,
-            transition: {
-                staggerChildren: 0.08,
-            },
-        },
-    };
-
-    const featureItemVariants = {
-        initial: { opacity: 0, x: -10 },
-        animate: {
-            opacity: 1,
-            x: 0,
-            transition: {
-                duration: duration.fast,
-            },
-        },
-    };
-
-    const getTechChipAnimation = (cardIndex) => {
-        if (isTouchDevice()) return {};
-        return hoveredCard === cardIndex ? { y: -3, scale: 1.05 } : { y: 0, scale: 1 };
-    };
-
     return (
         <section id="projects" className="section projects-section" ref={ref}>
             <motion.div
                 className="section-header"
                 initial={{ opacity: 0, y: 30 }}
                 animate={isInView ? { opacity: 1, y: 0 } : {}}
-                transition={{ duration: duration.slow, ease: easing.enter }}
+                transition={{ duration: 0.6 }}
             >
                 <h2 className="section-title">Projects</h2>
                 <p className="section-subtitle">
@@ -146,130 +91,58 @@ const Projects = () => {
 
             <motion.div
                 className="projects-grid"
-                variants={containerVariants}
-                initial="initial"
-                animate={isInView ? 'animate' : 'initial'}
                 style={{ y: parallaxY }}
             >
                 {projects.map((project, index) => (
                     <MorphingCard
                         key={index}
                         className="project-card"
-                        delay={index * 0.15}
-                        onMouseEnter={() => setHoveredCard(index)}
-                        onMouseLeave={() => setHoveredCard(null)}
+                        delay={0}
+                        style={{ opacity: 0 }}
                     >
                         {/* Project Image */}
                         <div className="project-image-container">
                             <img src={project.image} alt={project.title} className="project-card-image" />
-                            <div className="project-image-overlay"></div>
+                            <div className="project-image-overlay" />
                         </div>
 
                         {/* Status badge */}
-                        <motion.span
-                            className={`project-status ${project.status.toLowerCase()}`}
-                            initial={{ opacity: 0, scale: 0.8 }}
-                            animate={{ opacity: 1, scale: 1 }}
-                            transition={{ delay: 0.3 + index * 0.15 }}
-                        >
+                        <span className={`project-status ${project.status.toLowerCase()}`}>
                             {project.status}
-                        </motion.span>
+                        </span>
 
                         {/* Title */}
-                        <motion.h3
-                            className="project-title"
-                            initial={{ opacity: 0 }}
-                            animate={{ opacity: 1 }}
-                            transition={{ delay: 0.4 + index * 0.15 }}
-                        >
-                            {project.title}
-                        </motion.h3>
+                        <h3 className="project-title">{project.title}</h3>
 
                         {/* Description */}
-                        <motion.p
-                            className="project-description"
-                            initial={{ opacity: 0 }}
-                            animate={{ opacity: 1 }}
-                            transition={{ delay: 0.5 + index * 0.15 }}
-                        >
-                            {project.description}
-                        </motion.p>
+                        <p className="project-description">{project.description}</p>
 
                         {/* Features */}
-                        <motion.ul
-                            className="project-features"
-                            variants={featureListVariants}
-                        >
+                        <ul className="project-features">
                             {project.features.map((feature, featureIndex) => (
-                                <motion.li
-                                    key={featureIndex}
-                                    variants={featureItemVariants}
-                                >
-                                    {feature}
-                                </motion.li>
+                                <li key={featureIndex}>{feature}</li>
                             ))}
-                        </motion.ul>
+                        </ul>
 
                         {/* Tech stack */}
-                        <motion.div
-                            className="project-tech"
-                            initial={{ opacity: 0 }}
-                            animate={{ opacity: 1 }}
-                            transition={{ delay: 0.6 + index * 0.15 }}
-                        >
+                        <div className="project-tech">
                             {project.tech.map((tech, techIndex) => (
-                                <motion.span
-                                    key={techIndex}
-                                    className="tech-tag"
-                                    animate={getTechChipAnimation(index)}
-                                    transition={{
-                                        duration: duration.instant,
-                                        delay: techIndex * 0.03,
-                                    }}
-                                    whileHover={{
-                                        scale: 1.1,
-                                        y: -2,
-                                        transition: { duration: duration.instant },
-                                    }}
-                                >
-                                    {tech}
-                                </motion.span>
+                                <span key={techIndex} className="tech-tag">{tech}</span>
                             ))}
-                        </motion.div>
+                        </div>
 
                         {/* GitHub link */}
                         {project.link && (
-                            <motion.a
+                            <a
                                 href={project.link}
                                 target="_blank"
                                 rel="noopener noreferrer"
                                 className="project-link"
-                                initial={{ opacity: 0 }}
-                                animate={{
-                                    opacity: hoveredCard === index || isTouchDevice() ? 1 : 0.7,
-                                }}
-                                transition={{ duration: duration.fast }}
-                                whileHover={{
-                                    x: 5,
-                                    opacity: 1,
-                                    transition: { duration: duration.instant },
-                                }}
                             >
                                 <FaGithub size={18} />
                                 <span>View on GitHub</span>
-                                <motion.span
-                                    animate={{
-                                        x: [0, 3, 0],
-                                    }}
-                                    transition={{
-                                        duration: 1.5,
-                                        repeat: Infinity,
-                                        ease: "easeInOut",
-                                    }}
-                                >
-                                    <FaExternalLinkAlt size={16} />
-                                </motion.span>
-                            </motion.a>
+                                <FaExternalLinkAlt size={16} />
+                            </a>
                         )}
                     </MorphingCard>
                 ))}
