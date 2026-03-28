@@ -80,9 +80,7 @@ I enjoy turning **ideas into real working systems** — from coding bootcamps to
 
 ---
 
-<p align="center">
-<img src="https://komarev.com/ghpvc/?username=siddharthg-7&style=for-the-badge&color=blue" alt="profile views"/>
-</p>
+
 
 ---
 
