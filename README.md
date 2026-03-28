@@ -40,7 +40,6 @@ I enjoy turning **ideas into real working systems** — from coding bootcamps to
 
 </p>
 
----
 
 #  Tech Stack
 
@@ -74,14 +73,6 @@ I enjoy turning **ideas into real working systems** — from coding bootcamps to
 ![Vercel](https://img.shields.io/badge/Vercel-black?style=for-the-badge&logo=vercel)
 ![Render](https://img.shields.io/badge/Render-46E3B7?style=for-the-badge&logo=render)
 
----
 
-
-
----
-
-
-
----
 
  **Always building, always learning, always shipping.**
