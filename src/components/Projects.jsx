@@ -56,8 +56,8 @@ const Projects = () => {
                 'Fully responsive UI',
                 'Educational resources',
             ],
-            tech: ['HTML', 'CSS', 'JavaScript', 'PHP'],
-            link: 'https://github.com/siddharthg-7/Trustlink-updated-version',
+            tech: ['React', 'Node.js', 'Firebase', 'NLP'],
+            link: 'https://github.com/siddharthg-7/Trust-Link-_Verify-before-You-trust',
         },
         {
             title: 'Decentralized Certificate System',

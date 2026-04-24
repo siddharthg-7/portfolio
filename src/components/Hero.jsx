@@ -86,12 +86,11 @@ const Hero = () => {
 
                     {/* Tagline */}
                     <p className="hero-tagline" style={{ opacity: 0 }}>
-                        Second-year B.Tech IT student building scalable full-stack and AI-powered systems.
+                        B.Tech IT student building scalable full-stack and AI-powered systems.
                     </p>
 
                     <p className="hero-description" style={{ opacity: 0 }}>
-                        Passionate about software development, full-stack web applications, and data-driven AI projects.
-                        I focus on clean code, problem-solving, and building scalable systems that make a real-world impact.
+                        I am a passionate software development and AI-focused student. I enjoy building AI-powered systems, full-stack applications, and solving real-world problems using technology. I focus on clean code, continuous learning, and creating scalable, impactful projects.
                     </p>
 
                     {/* CTA Buttons */}
